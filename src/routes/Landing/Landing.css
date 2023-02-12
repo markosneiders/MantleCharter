@@ -1,0 +1,71 @@
+.Landing {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	background-color: #9bddff;
+	justify-content: center;
+	display: flex;
+}
+.Landing__Waves {
+	width: 100%;
+	height: 300%;
+	position: absolute;
+	pointer-events: none;
+}
+.Landing__Waves-Wave {
+	height: 100%;
+	position: absolute;
+	pointer-events: none;
+}
+.Landing__Title {
+	padding-top: 12.5%;
+	width: fit-content;
+	height: fit-content;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.Landing__Title-Title {
+	font-family: "Comfortaa", cursive;
+	width: fit-content;
+	height: fit-content;
+	font-size: 60px;
+	color: #0054b4;
+	display: flex;
+}
+.Landing__Title-SubTitle {
+	font-family: "Comfortaa", cursive;
+	width: fit-content;
+	height: fit-content;
+	font-size: 30px;
+	margin-top: 8px;
+	color: #0077ff;
+	display: flex;
+}
+.Landing__Title-Button {
+	width: 40%;
+	margin-top: 32px;
+	margin-bottom: 32px;
+	padding-left: 20px;
+	padding-right: 20px;
+	color: #ffffff;
+	background-color: #0054b4;
+	border-width: 0;
+	border-radius: 20px;
+	height: 64px;
+	font-size: 30px;
+	font-family: "Comfortaa", cursive;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+	transition: 0.5s;
+}
+.Landing__Title-Button:hover {
+	margin-top: 24px;
+}
+.Landing__Title-Button:active {
+	transition: 0.1s;
+	margin-top: 24px;
+	transform: scale(0.9);
+}

@@ -1,0 +1,15 @@
+.bg {
+	background-color: #003c81;
+}
+.Explore {
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
+}
+
+.Explore.visible {
+	opacity: 1;
+}
+
+.Explore.hidden {
+	opacity: 0;
+}
