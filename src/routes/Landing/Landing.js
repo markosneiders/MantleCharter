@@ -26,7 +26,7 @@ function Landing() {
 						transform: dive ? "translateY(-30%)" : "translateY(0)",
 					}}
 					options={{
-						height: 640,
+						height: 0,
 						amplitude: 40,
 						speed: 0.15,
 						points: 5,
@@ -41,7 +41,7 @@ function Landing() {
 						transform: dive ? "translateY(-30%)" : "translateY(0)",
 					}}
 					options={{
-						height: 680,
+						height: 40,
 						amplitude: 40,
 						speed: 0.125,
 						points: 5,
@@ -56,7 +56,7 @@ function Landing() {
 						transform: dive ? "translateY(-30%)" : "translateY(0)",
 					}}
 					options={{
-						height: 720,
+						height: 80,
 						amplitude: 40,
 						speed: 0.1,
 						points: 5,
