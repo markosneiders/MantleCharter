@@ -16,6 +16,20 @@ function Landing() {
 	};
 	return (
 		<div className="Landing">
+			<div className="Landing__Title">
+				<h1 className="Landing__Title-Title">
+					<RiCompasses2Line />
+					MantleCharter
+				</h1>
+				<h1 className="Landing__Title-SubTitle">
+					Explore the depths of the Mantle network
+				</h1>
+				<button onClick={handleClick} className="Landing__Title-Button">
+					<BsChevronDoubleDown />
+					Dive in
+					<BsChevronDoubleDown />
+				</button>
+			</div>
 			<div className="Landing__Waves">
 				<Wave
 					className="Landing__Waves-Wave"
@@ -26,7 +40,7 @@ function Landing() {
 						transform: dive ? "translateY(-30%)" : "translateY(0)",
 					}}
 					options={{
-						height: 0,
+						height: 640,
 						amplitude: 40,
 						speed: 0.15,
 						points: 5,
@@ -41,7 +55,7 @@ function Landing() {
 						transform: dive ? "translateY(-30%)" : "translateY(0)",
 					}}
 					options={{
-						height: 40,
+						height: 680,
 						amplitude: 40,
 						speed: 0.125,
 						points: 5,
@@ -56,26 +70,12 @@ function Landing() {
 						transform: dive ? "translateY(-30%)" : "translateY(0)",
 					}}
 					options={{
-						height: 80,
+						height: 720,
 						amplitude: 40,
 						speed: 0.1,
 						points: 5,
 					}}
 				/>
-			</div>
-			<div className="Landing__Title">
-				<h1 className="Landing__Title-Title">
-					<RiCompasses2Line />
-					MantleCharter
-				</h1>
-				<h1 className="Landing__Title-SubTitle">
-					Explore the depths of the Mantle network
-				</h1>
-				<button onClick={handleClick} className="Landing__Title-Button">
-					<BsChevronDoubleDown />
-					Dive in
-					<BsChevronDoubleDown />
-				</button>
 			</div>
 		</div>
 	);
