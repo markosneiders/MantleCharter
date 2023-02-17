@@ -1,0 +1,30 @@
+.toggle-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 48px;
+	height: 48px;
+	background-color: #003c81;
+	border-radius: 8px;
+	border: none;
+	color: white;
+	margin: 8px;
+	font-size: 32px;
+	cursor: pointer;
+	transition: 0.2s;
+}
+.toggle-button:hover {
+	transform: scale(1.05);
+}
+.toggle-button:active {
+	transform: scale(0.9);
+}
+.toggle-button-tooltip {
+	height: max-content;
+	width: max-content;
+	border-radius: 8px;
+	color: white;
+	font-family: "Comfortaa", cursive;
+	background-color: #002140;
+	padding: 8px;
+}

@@ -1,0 +1,45 @@
+.container {
+	width: 230px;
+}
+.toolbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 64px;
+	height: 148px;
+	border-bottom-right-radius: 8px;
+	background-color: #002140;
+	transition: left 0.5s ease-out;
+}
+
+.toolbar.hidden {
+	left: -64px;
+}
+
+.button {
+	position: absolute;
+	left: 64px;
+	top: 32px;
+	width: 30px;
+	height: 74px;
+	background-color: #002140;
+	transition: left 0.5s ease-out;
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 4px;
+	border-radius: 0px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+.button.hidden {
+	left: 0px;
+}
+
+.content {
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

@@ -1,0 +1,11 @@
+.ToolTip {
+	transform: translate(0%, -100%);
+	z-index: 1000;
+}
+.ToolTip__Container {
+	background-color: #002140;
+	padding: 8px;
+	border-radius: 8px;
+	font-family: "Comfortaa", cursive;
+	color: #fff;
+}

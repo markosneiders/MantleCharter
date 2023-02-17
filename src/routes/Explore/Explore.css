@@ -4,7 +4,7 @@
 .Explore {
 	opacity: 0;
 	transition: opacity 1s ease-in-out;
-	background: linear-gradient(to top, #00274c, #003c81);
+	background: linear-gradient(to top, #002140, #003c81);
 	display: flex;
 }
 .Explore.visible {
@@ -19,10 +19,20 @@
 }
 .Explore__SideBar {
 	position: absolute;
-	right: 0;
+	top: 50%;
+	left: 99%;
+	transform: translate(-100%, -50%);
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	margin-right: 16px;
+}
+.Explore__ToolTip {
+	height: 100px;
+	width: 161px;
+	border-radius: 8px;
+	color: white;
+	font-family: "Comfortaa", cursive;
+	background-color: #002140;
+	padding: 8px;
 }
