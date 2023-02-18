@@ -1,14 +1,21 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import data from "./data.json";
+import datab from "./data.json";
 import "./Explore.css";
 import VerticalGauge from "../../components/VerticalGauge/VerticalGauge";
 import ToolTip from "../../components/ToolTip/ToolTip";
 import Toolbar from "../../components/ToolBar/Toolbar";
 import ForceGraph2D from "react-force-graph-2d";
 import Blockies from "react-blockies";
+import axios from "axios";
 
 function Explore() {
 	//State definitions
+	const [loading, setLoading] = useState(true);
+	const [data, setData] = useState([{}]);
+	const graphLinks = [];
+	const [linkInfo, setLinkInfo] = useState({});
+	const [currentLinkInfo, setCurrentLinkInfo] = useState([]);
+
 	const [isVisible, setIsVisible] = useState(false);
 	const [hover, setHover] = useState(false);
 	const [highlightNodes, setHighlightNodes] = useState(new Set());
@@ -19,8 +26,9 @@ function Explore() {
 	const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
 	//When page is loaded slowly fade in
-	React.useEffect(() => {
+	useEffect(() => {
 		setIsVisible(true);
+		getData();
 	}, []);
 
 	const handleNodeHover = (node) => {
@@ -74,6 +82,67 @@ function Explore() {
 		setHighlightLinks(highlightLinks);
 	};
 
+	//Formats address to a more readable format
+	const formatAddress = (address) => {
+		return `${address.slice(0, 6)}...${address.slice(-4)}`;
+	};
+
+	//Generates a list of all nodes invovled with transactions (without duplicates)
+	const nodeIdGen = (item) => {
+		const data1 = [];
+		for (var i = 0; i < item.length; i++) {
+			// eslint-disable-next-line
+			if (data1.indexOf(item[i].from_address) > -1 !== true) {
+				data1.push(item[i].from_address);
+			} // eslint-disable-next-line
+			if (data1.indexOf(item[i].to_address) > -1 !== true) {
+				data1.push(item[i].to_address);
+			}
+		}
+		return data1;
+	};
+
+	//Removes duplicate links
+	const dupeLinkRemoval = (item) => {
+		const data1 = [];
+		for (var j = 0; j < item.length; j++) {
+			for (var i = 0; i < 25; i++) {
+				if (data1.indexOf(item[i].from + item[i].to) === -1) {
+					data1.push(item[i].from + item[i].to);
+				}
+			}
+		}
+		for (var x = 0; x < data1.length; x++) {
+			graphLinks.push({
+				from_address: formatAddress(data1[x].slice(0, 42)),
+				to_address: formatAddress(data1[x].slice(-42)),
+			});
+		}
+	};
+
+	const getData = async () => {
+		let response;
+		try {
+			response = await axios.get(
+				`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=0x7fC8eBFB82Bdac3e9D358E7fCcE6604144939739`
+			);
+
+			const transactions = response.data.result;
+
+			const tempData = transactions.map((transaction) => {
+				return {
+					toAddress: transaction.to,
+					fromAddress: transaction.from,
+				};
+			});
+
+			setData(tempData);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	console.log(data);
+
 	return (
 		<div className="bg">
 			<div
@@ -83,7 +152,7 @@ function Explore() {
 				<div className="Explore__Graph">
 					<ForceGraph2D
 						ref={graphRef}
-						graphData={data}
+						graphData={datab}
 						autoPauseRedraw={false}
 						maxZoom={5}
 						minZoom={0.5}
