@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./TxCard.css";
 import makeBlockie from "ethereum-blockies-base64";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 import { FiCopy } from "react-icons/fi";
+import { BsChevronDown } from "react-icons/bs";
 
 function TxCard() {
 	const source = new Image();
@@ -12,9 +13,22 @@ function TxCard() {
 	const sender = true;
 	const amount = 100;
 
+	const [expanded, setExpanded] = useState(false);
+
 	return (
 		<div className="TxCard">
 			<div className="TxCard__Header">
+				<div
+					onClick={() => setExpanded(!expanded)}
+					style={{
+						cursor: "pointer",
+						marginRight: "16px",
+						transform: `scaleY(${expanded ? "-1" : "1"})`,
+						transition: "0.5s",
+					}}
+				>
+					<BsChevronDown fontSize={"30px"} />
+				</div>
 				<img
 					src={source.src}
 					alt="Source blockie"
@@ -64,7 +78,10 @@ function TxCard() {
 					}}
 				/>
 			</div>
-			<div className="TxCard__Body">
+			<div
+				className="TxCard__Body"
+				style={{ transform: `scaleY(${expanded ? "1" : "0"})` }}
+			>
 				<p style={{ marginTop: "6px" }}>From: </p>
 				<div
 					style={{ display: "flex", cursor: "pointer" }}

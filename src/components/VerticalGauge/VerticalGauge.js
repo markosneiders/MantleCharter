@@ -10,8 +10,6 @@ function VerticalGauge({ max, min, onChange }) {
 	const startYRef = useRef(null);
 	const indicatorCount = 10;
 
-	const [value, setValue] = useState(min);
-
 	const handleMouseDown = (event) => {
 		setIsDragging(true);
 		startYRef.current = event.clientY;
@@ -53,7 +51,11 @@ function VerticalGauge({ max, min, onChange }) {
 		onChange(
 			min - (min - max) * (sliderDistance / (windowSize.current[1] - 167))
 		);
-	}, [sliderDistance]);
+	}, [sliderDistance, max]);
+	useEffect(() => {
+		setSliderDistance(0);
+		onChange(min);
+	}, [min, max]);
 
 	function UnixTimeToDate(unixTime) {
 		const date = new Date(unixTime * 1000);
@@ -71,19 +73,21 @@ function VerticalGauge({ max, min, onChange }) {
 
 	return (
 		<div className="VerticalGauge" ref={containerRef}>
-			<div
-				className="VerticalGauge__Indicator"
-				style={{ top: sliderDistance }}
-				onMouseDown={handleMouseDown}
-				onMouseMove={handleMouseMove}
-			>
-				{UnixTimeToDate(
-					min -
-						(min - max) *
-							(sliderDistance / (windowSize.current[1] - 167))
-				)}
-				<AiFillCaretRight />
-			</div>
+			{max != 0 && min != 0 ? (
+				<div
+					className="VerticalGauge__Indicator"
+					style={{ top: sliderDistance }}
+					onMouseDown={handleMouseDown}
+					onMouseMove={handleMouseMove}
+				>
+					{UnixTimeToDate(
+						min -
+							(min - max) *
+								(sliderDistance / (windowSize.current[1] - 167))
+					)}
+					<AiFillCaretRight />
+				</div>
+			) : null}
 			<div className="VerticalGauge__Container">
 				<div className="VerticalGauge__Container__Markers">
 					{[...Array(indicatorCount)].map((e, i) => (

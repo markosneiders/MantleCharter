@@ -77,6 +77,17 @@ function Explore() {
 	};
 
 	const handleLinkHover = (link) => {
+		if (link) {
+			setHover(true);
+			setHoverAddress(
+				`${formatAddress(link.source.name)} -> ${formatAddress(
+					link.target.name
+				)}`
+			);
+		} else {
+			setHover(false);
+		}
+
 		highlightNodes.clear();
 		highlightLinks.clear();
 
@@ -162,6 +173,7 @@ function Explore() {
 	};
 
 	const getData = async () => {
+		setIsLoading(true);
 		let response;
 		try {
 			response = await axios.get(
@@ -225,9 +237,7 @@ function Explore() {
 				style={{ height: windowSize.current[1] }}
 			>
 				<div className="Explore__Graph">
-					{isLoading ? (
-						<p>Loading...</p>
-					) : (
+					{isLoading ? null : (
 						<ForceGraph2D
 							ref={graphRef}
 							graphData={data}
@@ -250,20 +260,28 @@ function Explore() {
 							nodeVisibility={nodeVisibility}
 							onLinkHover={handleLinkHover}
 							onNodeHover={handleNodeHover}
+							onNodeClick={(e) => setCurrentAddress(e.id)}
 							{...graphOptions}
 						/>
 					)}
 				</div>
 
-				{!isLoading && data.links.length > 0 ? (
-					<div className="Explore__SideBar">
+				<div className="Explore__SideBar">
+					{!isLoading && data.links.length > 0 ? (
 						<VerticalGauge
 							min={data.links[0].timeStamp}
 							max={data.links[data.links.length - 1].timeStamp}
 							onChange={setCurrentDepth}
 						/>
-					</div>
-				) : null}
+					) : (
+						<VerticalGauge
+							onChange={setCurrentDepth}
+							min={0}
+							max={0}
+						/>
+					)}
+				</div>
+
 				<ToolTip
 					active={hover}
 					children={
@@ -288,6 +306,14 @@ function Explore() {
 						No transactions found
 					</div>
 				) : null}
+				{isLoading ? (
+					<div className="Explore__NoAddress">Loading...</div>
+				) : null}
+				<div className="Explore__Stats">
+					{isLoading
+						? "Loading"
+						: `Found in total ${data.nodes.length} nodes \n and ${data.links.length} transactions`}
+				</div>
 			</div>
 		</div>
 	);

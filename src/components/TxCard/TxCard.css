@@ -1,7 +1,7 @@
 .TxCard {
 	background-color: #002140;
 	width: 400px;
-	height: max-content;
+	height: min-content;
 	border-radius: 8px;
 	padding: 12px;
 }

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { BsChevronDoubleRight, BsXDiamond } from "react-icons/bs";
-import { IoLocate } from "react-icons/io5";
+import { IoLocate, IoHelp } from "react-icons/io5";
 import { VscGraph } from "react-icons/vsc";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import ToolTip from "../ToolTip/ToolTip";
 import "./ToolBar.css";
 
-function Toolbar({ func0, func1, func2 }) {
+function Toolbar({ func0, func1, func2, func3 }) {
 	const [visible, setVisible] = useState(true);
 	const [hover, setHover] = useState(new Array(10).fill(false));
 
@@ -39,6 +39,10 @@ function Toolbar({ func0, func1, func2 }) {
 				children={
 					<div className="toggle-button-tooltip">Toggle blockies</div>
 				}
+			/>
+			<ToolTip
+				active={hover[3]}
+				children={<div className="toggle-button-tooltip">Help</div>}
 			/>
 			<div
 				className={`button ${visible ? "visible" : "hidden"}`}
@@ -74,6 +78,12 @@ function Toolbar({ func0, func1, func2 }) {
 						index={2}
 						toggle={true}
 						startState={true}
+					/>
+					<ToggleButton
+						children={<IoHelp />}
+						func={func3}
+						hover={handleHover}
+						index={3}
 					/>
 				</div>
 			</div>

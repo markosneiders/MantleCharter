@@ -27,8 +27,6 @@
 	justify-content: center;
 }
 .Explore__ToolTip {
-	height: 100px;
-	width: 161px;
 	border-radius: 8px;
 	color: white;
 	font-family: "Comfortaa", cursive;
@@ -59,4 +57,14 @@
 	color: #fff;
 	font-family: "Comfortaa", cursive;
 	font-size: 30px;
+}
+.Explore__Stats {
+	background-color: #003c81;
+	position: absolute;
+	bottom: 16px;
+	left: 16px;
+	color: #fff;
+	font-family: "Comfortaa", cursive;
+	padding: 8px;
+	border-radius: 8px;
 }
