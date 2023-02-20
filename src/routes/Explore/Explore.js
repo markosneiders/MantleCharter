@@ -26,6 +26,7 @@ function Explore() {
 	const [currentAddress, setCurrentAddress] = useState(
 		"0xBc22fDB25c8eC030D3aF0DdEfEF2E5A1058E89f7"
 	);
+	const [currentDepth, setCurrentDepth] = useState(0);
 
 	const [isVisible, setIsVisible] = useState(false);
 	const [hover, setHover] = useState(false);
@@ -200,13 +201,23 @@ function Explore() {
 			setData(graphData);
 			console.log(graphData);
 			setIsLoading(false);
-			console.log(graphData);
 		} catch (err) {
 			console.error(err);
 			setIsLoading(false);
 		}
 	};
 
+	//Function to determine if to show a link
+	const linkVisibility = (link) => link.timeStamp >= currentDepth;
+	const nodeVisibility = (node) => {
+		const hasLinks = data.links.some(
+			(link) =>
+				(link.source.id === node.id &&
+					link.timeStamp >= currentDepth) ||
+				(link.target.id === node.id && link.timeStamp >= currentDepth)
+		);
+		return hasLinks;
+	};
 	return (
 		<div className="bg">
 			<div
@@ -235,6 +246,8 @@ function Explore() {
 							linkDirectionalParticleWidth={(link) =>
 								highlightLinks.has(link) ? 7 : 3
 							}
+							linkVisibility={linkVisibility}
+							nodeVisibility={nodeVisibility}
 							onLinkHover={handleLinkHover}
 							onNodeHover={handleNodeHover}
 							{...graphOptions}
@@ -242,9 +255,15 @@ function Explore() {
 					)}
 				</div>
 
-				<div className="Explore__SideBar">
-					<VerticalGauge />
-				</div>
+				{!isLoading && data.links.length > 0 ? (
+					<div className="Explore__SideBar">
+						<VerticalGauge
+							min={data.links[0].timeStamp}
+							max={data.links[data.links.length - 1].timeStamp}
+							onChange={setCurrentDepth}
+						/>
+					</div>
+				) : null}
 				<ToolTip
 					active={hover}
 					children={
@@ -264,6 +283,11 @@ function Explore() {
 					address={currentAddress}
 					onChange={setCurrentAddress}
 				/>
+				{data.nodes == 0 ? (
+					<div className="Explore__NoAddress">
+						No transactions found
+					</div>
+				) : null}
 			</div>
 		</div>
 	);

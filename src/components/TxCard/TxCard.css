@@ -1,7 +1,7 @@
 .TxCard {
 	background-color: #002140;
 	width: 400px;
-	height: 150px;
+	height: max-content;
 	border-radius: 8px;
 	padding: 12px;
 }
@@ -9,4 +9,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+.TxCard__Body {
+	margin-top: 12px;
 }

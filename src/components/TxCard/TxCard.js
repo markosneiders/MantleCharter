@@ -2,6 +2,7 @@ import React from "react";
 import "./TxCard.css";
 import makeBlockie from "ethereum-blockies-base64";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
+import { FiCopy } from "react-icons/fi";
 
 function TxCard() {
 	const source = new Image();
@@ -62,6 +63,41 @@ function TxCard() {
 						height: 64,
 					}}
 				/>
+			</div>
+			<div className="TxCard__Body">
+				<p style={{ marginTop: "6px" }}>From: </p>
+				<div
+					style={{ display: "flex", cursor: "pointer" }}
+					onClick={() => navigator.clipboard.writeText("textToCopy")}
+				>
+					<p
+						style={{
+							fontSize: "14px",
+							marginRight: "8px",
+							marginTop: "4px",
+						}}
+					>
+						0xBc22fDB25c8eC030D3aF0DdEfEF2E5A1058E89f7
+					</p>
+					<FiCopy />
+				</div>
+
+				<p style={{ marginTop: "6px" }}>To: </p>
+				<div
+					style={{ display: "flex", cursor: "pointer" }}
+					onClick={() => navigator.clipboard.writeText("textToCopy")}
+				>
+					<p
+						style={{
+							fontSize: "14px",
+							marginRight: "8px",
+							marginTop: "4px",
+						}}
+					>
+						0xBc22fDB25c8eC030D3aF0DdEfEF2E5A1058E89f7
+					</p>
+					<FiCopy />
+				</div>
 			</div>
 		</div>
 	);

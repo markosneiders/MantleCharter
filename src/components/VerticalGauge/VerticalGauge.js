@@ -2,13 +2,15 @@ import React, { useRef, useEffect, useState } from "react";
 import "./VerticalGauge.css";
 import { AiFillCaretRight } from "react-icons/ai";
 
-function VerticalGauge({ value }) {
+function VerticalGauge({ max, min, onChange }) {
 	const [sliderDistance, setSliderDistance] = useState(0);
 	const windowSize = useRef([window.innerWidth, window.innerHeight]);
 	const [isDragging, setIsDragging] = useState(false);
 	const containerRef = useRef(null);
 	const startYRef = useRef(null);
 	const indicatorCount = 10;
+
+	const [value, setValue] = useState(min);
 
 	const handleMouseDown = (event) => {
 		setIsDragging(true);
@@ -46,6 +48,27 @@ function VerticalGauge({ value }) {
 		setIsDragging(false);
 	};
 
+	//Updates value of slider to parent
+	useEffect(() => {
+		onChange(
+			min - (min - max) * (sliderDistance / (windowSize.current[1] - 167))
+		);
+	}, [sliderDistance]);
+
+	function UnixTimeToDate(unixTime) {
+		const date = new Date(unixTime * 1000);
+
+		const options = {
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		};
+		const humanDate = date.toLocaleDateString("en-US", options); // "Monday, February 21, 2022"
+
+		return humanDate;
+	}
+
 	return (
 		<div className="VerticalGauge" ref={containerRef}>
 			<div
@@ -54,7 +77,11 @@ function VerticalGauge({ value }) {
 				onMouseDown={handleMouseDown}
 				onMouseMove={handleMouseMove}
 			>
-				{`${sliderDistance}`}
+				{UnixTimeToDate(
+					min -
+						(min - max) *
+							(sliderDistance / (windowSize.current[1] - 167))
+				)}
 				<AiFillCaretRight />
 			</div>
 			<div className="VerticalGauge__Container">
