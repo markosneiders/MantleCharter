@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./ToggleButton.css";
 import ToolTip from "../ToolTip/ToolTip";
 
-const ToggleButton = ({ children, toggle, func, hover, index }) => {
+const ToggleButton = ({ children, toggle, func, hover, index, startState }) => {
 	const [hovered, setHovered] = useState(false);
 	const [deepHover, setDeepHover] = useState(false);
-
+	const [toggled, setToggled] = useState(startState);
 	useEffect(() => {
 		let timeoutId;
 		if (hovered) {
@@ -19,10 +19,14 @@ const ToggleButton = ({ children, toggle, func, hover, index }) => {
 		};
 	}, [hovered]);
 
+	const handleClick = () => {
+		setToggled(!toggled);
+		func();
+	};
 	return (
 		<div>
 			<button
-				onClick={func}
+				onClick={handleClick}
 				onMouseEnter={() => setHovered(true)}
 				onMouseLeave={() => {
 					setHovered(false);
@@ -31,16 +35,13 @@ const ToggleButton = ({ children, toggle, func, hover, index }) => {
 						hover(index);
 					}
 				}}
-				className={`toggle-button ${toggle ? toggle : null}`}
+				className={`toggle-button`}
+				style={{
+					color: toggle ? (toggled ? "#fff" : "#656565") : "#fff",
+				}}
 			>
 				{children}
 			</button>
-			{/* <ToolTip
-				active={true}
-				children={
-					<div className="toggle-button-tooltip">Center on graph</div>
-				}
-			/> */}
 		</div>
 	);
 };

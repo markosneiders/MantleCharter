@@ -1,34 +1,37 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import datab from "./data.json";
+import React, { useState, useRef } from "react";
+import data from "./data.json";
 import "./Explore.css";
+
+//Component imports
 import VerticalGauge from "../../components/VerticalGauge/VerticalGauge";
 import ToolTip from "../../components/ToolTip/ToolTip";
 import Toolbar from "../../components/ToolBar/Toolbar";
-import ForceGraph2D from "react-force-graph-2d";
-import Blockies from "react-blockies";
-import axios from "axios";
+import CurrentView from "../../components/CurrentView/CurrentView";
+import Timeline from "../../components/Timeline/Timeline";
+import AddressSelect from "../../components/AddressSelect/AddressSelect";
 
+//Packages import
+import ForceGraph2D from "react-force-graph-2d";
+import makeBlockie from "ethereum-blockies-base64";
 function Explore() {
 	//State definitions
-	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState([{}]);
-	const graphLinks = [];
-	const [linkInfo, setLinkInfo] = useState({});
-	const [currentLinkInfo, setCurrentLinkInfo] = useState([]);
-
 	const [isVisible, setIsVisible] = useState(false);
 	const [hover, setHover] = useState(false);
 	const [highlightNodes, setHighlightNodes] = useState(new Set());
 	const [highlightLinks, setHighlightLinks] = useState(new Set());
 	const [hoverNode, setHoverNode] = useState(null);
+	const [blockies, setBlockies] = useState(true);
+	const [isTimelineOpen, setIsTimelineOpen] = useState(false);
+	const [isAddressOpen, setIsAddressOpen] = useState(false);
+	const [currentAddress, setCurrentAddress] = useState("TODO");
+
 	const NODE_R = 8;
 	const graphRef = useRef(null);
 	const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
 	//When page is loaded slowly fade in
-	useEffect(() => {
+	React.useEffect(() => {
 		setIsVisible(true);
-		getData();
 	}, []);
 
 	const handleNodeHover = (node) => {
@@ -73,75 +76,71 @@ function Explore() {
 		updateHighlight();
 	};
 
-	const handleZoom = () => {
-		graphRef.current.zoomToFit(1000);
-	};
-
 	const updateHighlight = () => {
 		setHighlightNodes(highlightNodes);
 		setHighlightLinks(highlightLinks);
 	};
 
-	//Formats address to a more readable format
-	const formatAddress = (address) => {
-		return `${address.slice(0, 6)}...${address.slice(-4)}`;
-	};
-
-	//Generates a list of all nodes invovled with transactions (without duplicates)
-	const nodeIdGen = (item) => {
-		const data1 = [];
-		for (var i = 0; i < item.length; i++) {
-			// eslint-disable-next-line
-			if (data1.indexOf(item[i].from_address) > -1 !== true) {
-				data1.push(item[i].from_address);
-			} // eslint-disable-next-line
-			if (data1.indexOf(item[i].to_address) > -1 !== true) {
-				data1.push(item[i].to_address);
-			}
-		}
-		return data1;
-	};
-
-	//Removes duplicate links
-	const dupeLinkRemoval = (item) => {
-		const data1 = [];
-		for (var j = 0; j < item.length; j++) {
-			for (var i = 0; i < 25; i++) {
-				if (data1.indexOf(item[i].from + item[i].to) === -1) {
-					data1.push(item[i].from + item[i].to);
+	//Handles node rendering
+	const graphOptions = {
+		nodeCanvasObject: (node, ctx) => {
+			if (blockies) {
+				//Choose background color depending on if the nod is hovered upon
+				if (highlightNodes.has(node)) {
+					if (hoverNode === node) {
+						ctx.fillStyle = "#fff";
+					} else {
+						ctx.fillStyle = "#ccc";
+					}
+				} else {
+					ctx.fillStyle = "#0054b4";
 				}
+				ctx.fillRect(node.x - 6, node.y - 6, 12, 12);
+
+				//Render blockies image
+				const img = new Image();
+				img.src = makeBlockie(`${node.id}`);
+				const imgSize = 10;
+				ctx.drawImage(
+					img,
+					node.x - imgSize / 2,
+					node.y - imgSize / 2,
+					imgSize,
+					imgSize
+				);
+			} else {
+				ctx.beginPath();
+				ctx.arc(node.x, node.y, NODE_R * 1, 0, 2 * Math.PI, false);
+				ctx.fillStyle = "#0054b4";
+				ctx.fill();
 			}
-		}
-		for (var x = 0; x < data1.length; x++) {
-			graphLinks.push({
-				from_address: formatAddress(data1[x].slice(0, 42)),
-				to_address: formatAddress(data1[x].slice(-42)),
-			});
-		}
+		},
 	};
 
-	const getData = async () => {
-		let response;
-		try {
-			response = await axios.get(
-				`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=0x7fC8eBFB82Bdac3e9D358E7fCcE6604144939739`
-			);
-
-			const transactions = response.data.result;
-
-			const tempData = transactions.map((transaction) => {
-				return {
-					toAddress: transaction.to,
-					fromAddress: transaction.from,
-				};
-			});
-
-			setData(tempData);
-		} catch (err) {
-			console.error(err);
-		}
+	//Timeline modal open and close
+	const openTimeline = () => {
+		setIsTimelineOpen(true);
 	};
-	console.log(data);
+
+	const closeTimeline = () => {
+		setIsTimelineOpen(false);
+	};
+
+	//Address selector modal open and close
+	const openAddress = () => {
+		setIsAddressOpen(true);
+	};
+
+	const closeAddress = () => {
+		setIsAddressOpen(false);
+	};
+	//Toolbar functions
+	const handleZoom = () => {
+		graphRef.current.zoomToFit(1000);
+	};
+	const handleBlockies = () => {
+		setBlockies(!blockies);
+	};
 
 	return (
 		<div className="bg">
@@ -152,41 +151,23 @@ function Explore() {
 				<div className="Explore__Graph">
 					<ForceGraph2D
 						ref={graphRef}
-						graphData={datab}
+						graphData={data}
 						autoPauseRedraw={false}
 						maxZoom={5}
 						minZoom={0.5}
 						nodeLabel={""}
-						nodeRelSize={NODE_R}
-						nodeColor={() => "#0054B4"}
 						linkColor={() => "#FFF"}
 						linkDirectionalParticles={1}
 						linkDirectionalParticleSpeed={0.005}
+						nodeRelSize={8}
 						linkCurvature={0.3}
 						linkWidth={(link) => (highlightLinks.has(link) ? 5 : 2)}
 						linkDirectionalParticleWidth={(link) =>
 							highlightLinks.has(link) ? 7 : 3
 						}
-						nodeCanvasObjectMode={(node) =>
-							highlightNodes.has(node) ? "before" : undefined
-						}
 						onLinkHover={handleLinkHover}
 						onNodeHover={handleNodeHover}
-						nodeCanvasObject={(node, ctx) => {
-							// add ring just for highlighted nodes
-							ctx.beginPath();
-							ctx.arc(
-								node.x,
-								node.y,
-								NODE_R * 1.1,
-								0,
-								2 * Math.PI,
-								false
-							);
-							ctx.fillStyle =
-								node === hoverNode ? "#ffff" : "#cccc";
-							ctx.fill();
-						}}
+						{...graphOptions}
 					/>
 				</div>
 
@@ -201,7 +182,19 @@ function Explore() {
 						</div>
 					}
 				/>
-				<Toolbar func1={handleZoom} />
+				<Toolbar
+					func0={handleZoom}
+					func1={openTimeline}
+					func2={handleBlockies}
+				/>
+				<CurrentView address={currentAddress} onClick={openAddress} />
+				<Timeline isOpen={isTimelineOpen} onClose={closeTimeline} />
+				<AddressSelect
+					isOpen={isAddressOpen}
+					onClose={closeAddress}
+					address={currentAddress}
+					onChange={setCurrentAddress}
+				/>
 			</div>
 		</div>
 	);

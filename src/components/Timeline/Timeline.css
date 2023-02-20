@@ -1,0 +1,57 @@
+.Timeline {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(1px); /* Add the backdrop-filter property */
+	-webkit-backdrop-filter: blur(
+		1px
+	); /* Add vendor prefixes for browser compatibility */
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	transition: 0.5s;
+}
+
+.Timeline.visible {
+	opacity: 1;
+}
+.Timeline.hidden {
+	pointer-events: none;
+}
+
+.Timeline__content {
+	position: relative;
+	background-color: #003c81;
+	padding: 16px;
+	border-radius: 8px;
+	width: 80%;
+	height: 80%;
+	color: #ffffff;
+	font-family: "Comfortaa", cursive;
+}
+.Timeline__content-close {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	background-color: #002140;
+	width: 40px;
+	height: 40px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 0.3s;
+	cursor: pointer;
+	font-size: 32px;
+}
+.Timeline__content-close:hover {
+	transform: scale(1.1);
+}
+.Timeline__content-close:active {
+	transform: scale(0.9);
+}

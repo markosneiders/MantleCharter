@@ -6,7 +6,7 @@
 	top: 0;
 	left: 0;
 	width: 64px;
-	height: 148px;
+	height: 204px;
 	border-bottom-right-radius: 8px;
 	background-color: #002140;
 	transition: left 0.5s ease-out;
@@ -19,7 +19,7 @@
 .button {
 	position: absolute;
 	left: 64px;
-	top: 32px;
+	top: 64px;
 	width: 30px;
 	height: 74px;
 	background-color: #002140;
@@ -32,6 +32,7 @@
 	border-radius: 0px;
 	border-top-right-radius: 8px;
 	border-bottom-right-radius: 8px;
+	cursor: pointer;
 }
 .button.hidden {
 	left: 0px;

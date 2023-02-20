@@ -10,7 +10,6 @@
 .Explore.visible {
 	opacity: 1;
 }
-
 .Explore.hidden {
 	opacity: 0;
 }
@@ -35,4 +34,20 @@
 	font-family: "Comfortaa", cursive;
 	background-color: #002140;
 	padding: 8px;
+}
+.Explore__Modal {
+	background-color: red;
+	width: 90%;
+	height: 90%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	transition: 0.5;
+}
+.Explore__Modal.visible {
+	opacity: 1;
+}
+.Explore__Modal.hidden {
+	opacity: 0;
 }

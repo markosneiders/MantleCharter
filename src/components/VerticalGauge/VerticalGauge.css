@@ -19,8 +19,7 @@
 	background-color: #0054b4;
 	padding: 8px;
 	border-radius: 16px;
-
-	/* transition: 0.5s; */
+	cursor: grab;
 }
 .VerticalGauge__Container {
 	position: relative;
