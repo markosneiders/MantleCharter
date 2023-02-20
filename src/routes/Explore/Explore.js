@@ -172,6 +172,7 @@ function Explore() {
 			transactions.forEach((transaction) => {
 				const fromAddress = transaction.from;
 				const toAddress = transaction.to;
+				const transactionTimeStamp = transaction.timeStamp;
 
 				// Add nodes
 				if (!nodes.has(fromAddress)) {
@@ -185,12 +186,17 @@ function Explore() {
 				}
 
 				// Add link
-				links.push({ source: fromAddress, target: toAddress });
+				links.push({
+					source: fromAddress,
+					target: toAddress,
+					timeStamp: transactionTimeStamp,
+				});
 			});
 
 			const graphData = { nodes: Array.from(nodes.values()), links };
 			setData(graphData);
 			setIsLoading(false);
+			console.log(graphData);
 		} catch (err) {
 			console.error(err);
 			setIsLoading(false);
