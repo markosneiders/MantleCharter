@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import data from "./data.json";
+import React, { useState, useEffect, useRef } from "react";
 import "./Explore.css";
 
 //Component imports
@@ -13,31 +12,41 @@ import AddressSelect from "../../components/AddressSelect/AddressSelect";
 //Packages import
 import ForceGraph2D from "react-force-graph-2d";
 import makeBlockie from "ethereum-blockies-base64";
+import axios from "axios";
+
 function Explore() {
 	//State definitions
+	const [isLoading, setIsLoading] = useState(true);
+	const [data, setData] = useState([]);
+	const [hoverAddress, setHoverAddress] = useState("");
+
+	const [blockies, setBlockies] = useState(false);
+	const [isTimelineOpen, setIsTimelineOpen] = useState(false);
+	const [isAddressOpen, setIsAddressOpen] = useState(false);
+	const [currentAddress, setCurrentAddress] = useState(
+		"0xBc22fDB25c8eC030D3aF0DdEfEF2E5A1058E89f7"
+	);
+
 	const [isVisible, setIsVisible] = useState(false);
 	const [hover, setHover] = useState(false);
 	const [highlightNodes, setHighlightNodes] = useState(new Set());
 	const [highlightLinks, setHighlightLinks] = useState(new Set());
 	const [hoverNode, setHoverNode] = useState(null);
-	const [blockies, setBlockies] = useState(true);
-	const [isTimelineOpen, setIsTimelineOpen] = useState(false);
-	const [isAddressOpen, setIsAddressOpen] = useState(false);
-	const [currentAddress, setCurrentAddress] = useState("TODO");
-
 	const NODE_R = 8;
 	const graphRef = useRef(null);
 	const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
 	//When page is loaded slowly fade in
-	React.useEffect(() => {
+	useEffect(() => {
 		setIsVisible(true);
+		getData();
 	}, []);
 
 	const handleNodeHover = (node) => {
 		//Sets if node is being hovered on
 		if (node) {
 			setHover(true);
+			setHoverAddress(formatAddress(node.name));
 		} else {
 			setHover(false);
 		}
@@ -76,9 +85,35 @@ function Explore() {
 		updateHighlight();
 	};
 
+	const handleZoom = () => {
+		graphRef.current.zoomToFit(1000);
+	};
+
 	const updateHighlight = () => {
 		setHighlightNodes(highlightNodes);
 		setHighlightLinks(highlightLinks);
+	};
+
+	//Timeline modal open and close
+	const openTimeline = () => {
+		setIsTimelineOpen(true);
+	};
+
+	const closeTimeline = () => {
+		setIsTimelineOpen(false);
+	};
+
+	const closeAddress = () => {
+		setIsAddressOpen(false);
+	};
+	//Toolbar functions
+	const handleBlockies = () => {
+		setBlockies(!blockies);
+	};
+
+	//Formats address to a more readable format
+	const formatAddress = (address) => {
+		return `${address.slice(0, 6)}...${address.slice(-4)}`;
 	};
 
 	//Handles node rendering
@@ -117,29 +152,49 @@ function Explore() {
 		},
 	};
 
-	//Timeline modal open and close
-	const openTimeline = () => {
-		setIsTimelineOpen(true);
-	};
-
-	const closeTimeline = () => {
-		setIsTimelineOpen(false);
-	};
-
 	//Address selector modal open and close
 	const openAddress = () => {
 		setIsAddressOpen(true);
 	};
 
-	const closeAddress = () => {
-		setIsAddressOpen(false);
-	};
-	//Toolbar functions
-	const handleZoom = () => {
-		graphRef.current.zoomToFit(1000);
-	};
-	const handleBlockies = () => {
-		setBlockies(!blockies);
+	const getData = async () => {
+		let response;
+		try {
+			response = await axios.get(
+				`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=${currentAddress}`
+			);
+
+			const transactions = response.data.result;
+
+			const nodes = new Map();
+			const links = [];
+
+			transactions.forEach((transaction) => {
+				const fromAddress = transaction.from;
+				const toAddress = transaction.to;
+
+				// Add nodes
+				if (!nodes.has(fromAddress)) {
+					nodes.set(fromAddress, {
+						id: fromAddress,
+						name: fromAddress,
+					});
+				}
+				if (!nodes.has(toAddress)) {
+					nodes.set(toAddress, { id: toAddress, name: toAddress });
+				}
+
+				// Add link
+				links.push({ source: fromAddress, target: toAddress });
+			});
+
+			const graphData = { nodes: Array.from(nodes.values()), links };
+			setData(graphData);
+			setIsLoading(false);
+		} catch (err) {
+			console.error(err);
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -149,37 +204,41 @@ function Explore() {
 				style={{ height: windowSize.current[1] }}
 			>
 				<div className="Explore__Graph">
-					<ForceGraph2D
-						ref={graphRef}
-						graphData={data}
-						autoPauseRedraw={false}
-						maxZoom={5}
-						minZoom={0.5}
-						nodeLabel={""}
-						linkColor={() => "#FFF"}
-						linkDirectionalParticles={1}
-						linkDirectionalParticleSpeed={0.005}
-						nodeRelSize={8}
-						linkCurvature={0.3}
-						linkWidth={(link) => (highlightLinks.has(link) ? 5 : 2)}
-						linkDirectionalParticleWidth={(link) =>
-							highlightLinks.has(link) ? 7 : 3
-						}
-						onLinkHover={handleLinkHover}
-						onNodeHover={handleNodeHover}
-						{...graphOptions}
-					/>
+					{isLoading ? (
+						<p>Loading...</p>
+					) : (
+						<ForceGraph2D
+							ref={graphRef}
+							graphData={data}
+							autoPauseRedraw={false}
+							maxZoom={5}
+							minZoom={0.5}
+							nodeLabel={""}
+							linkColor={() => "#FFF"}
+							linkDirectionalParticles={1}
+							linkDirectionalParticleSpeed={0.005}
+							nodeRelSize={8}
+							linkCurvature={0.3}
+							linkWidth={(link) =>
+								highlightLinks.has(link) ? 5 : 2
+							}
+							linkDirectionalParticleWidth={(link) =>
+								highlightLinks.has(link) ? 7 : 3
+							}
+							onLinkHover={handleLinkHover}
+							onNodeHover={handleNodeHover}
+							{...graphOptions}
+						/>
+					)}
 				</div>
 
-				<div className="Explore__SideBar">
+				<div className="ExploreSideBar">
 					<VerticalGauge />
 				</div>
 				<ToolTip
 					active={hover}
 					children={
-						<div className="Explore__ToolTip">
-							ToDo: Add node info
-						</div>
+						<div className="Explore__ToolTip">{hoverAddress}</div>
 					}
 				/>
 				<Toolbar
