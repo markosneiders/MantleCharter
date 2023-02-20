@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./Timeline.css";
 import { AiOutlineClose } from "react-icons/ai";
-
+import TxCard from "../TxCard/TxCard";
 function Timeline({ isOpen, onClose }) {
 	const handleParentClick = (event) => {
 		event.preventDefault();
@@ -10,14 +10,19 @@ function Timeline({ isOpen, onClose }) {
 			onClose();
 		}
 	};
+	const handleEsc = (event) => {
+		if (event.keyCode === 27) {
+			onClose();
+		}
+	};
 
 	useEffect(() => {
-		document.addEventListener("keydown", onClose, false);
+		document.addEventListener("keydown", handleEsc, false);
 
 		return () => {
-			document.removeEventListener("keydown", onClose, false);
+			document.removeEventListener("keydown", handleEsc, false);
 		};
-	}, [onClose]);
+	}, [handleEsc]);
 	return (
 		<div
 			className={`Timeline ${isOpen ? "visible" : "hidden"}`}
@@ -28,6 +33,7 @@ function Timeline({ isOpen, onClose }) {
 				<div className="Timeline__content-close" onClick={onClose}>
 					<AiOutlineClose />
 				</div>
+				<TxCard />
 			</div>
 		</div>
 	);

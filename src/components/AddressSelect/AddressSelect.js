@@ -89,6 +89,7 @@ function AddressSelect({ isOpen, onClose, address, onChange }) {
 
 					<img
 						src={img.src}
+						alt="Currently entered address blockie"
 						style={{
 							width: "56px",
 							height: "56px",
@@ -127,9 +128,10 @@ function AddressSelect({ isOpen, onClose, address, onChange }) {
 						MetaMask
 						<img
 							src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1200px-MetaMask_Fox.svg.png"
+							alt="Metamask icon"
 							style={{
-								width: "32px",
-								height: "32px",
+								width: "28px",
+								height: "28px",
 								marginLeft: "8px",
 							}}
 						/>

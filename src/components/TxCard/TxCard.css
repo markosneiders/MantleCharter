@@ -1,0 +1,12 @@
+.TxCard {
+	background-color: #002140;
+	width: 400px;
+	height: 150px;
+	border-radius: 8px;
+	padding: 12px;
+}
+.TxCard__Header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}

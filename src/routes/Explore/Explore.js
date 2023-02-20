@@ -20,7 +20,7 @@ function Explore() {
 	const [data, setData] = useState([]);
 	const [hoverAddress, setHoverAddress] = useState("");
 
-	const [blockies, setBlockies] = useState(false);
+	const [blockies, setBlockies] = useState(true);
 	const [isTimelineOpen, setIsTimelineOpen] = useState(false);
 	const [isAddressOpen, setIsAddressOpen] = useState(false);
 	const [currentAddress, setCurrentAddress] = useState(
@@ -41,6 +41,9 @@ function Explore() {
 		setIsVisible(true);
 		getData();
 	}, []);
+	useEffect(() => {
+		getData();
+	}, [currentAddress]);
 
 	const handleNodeHover = (node) => {
 		//Sets if node is being hovered on
@@ -119,7 +122,7 @@ function Explore() {
 	//Handles node rendering
 	const graphOptions = {
 		nodeCanvasObject: (node, ctx) => {
-			if (blockies) {
+			if (blockies && node.id !== "") {
 				//Choose background color depending on if the nod is hovered upon
 				if (highlightNodes.has(node)) {
 					if (hoverNode === node) {
@@ -195,6 +198,7 @@ function Explore() {
 
 			const graphData = { nodes: Array.from(nodes.values()), links };
 			setData(graphData);
+			console.log(graphData);
 			setIsLoading(false);
 			console.log(graphData);
 		} catch (err) {
@@ -238,7 +242,7 @@ function Explore() {
 					)}
 				</div>
 
-				<div className="ExploreSideBar">
+				<div className="Explore__SideBar">
 					<VerticalGauge />
 				</div>
 				<ToolTip

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BsChevronDoubleRight, BsXDiamond } from "react-icons/bs";
 import { IoLocate } from "react-icons/io5";
-import { MdOutlineFeaturedPlayList } from "react-icons/md";
+import { VscGraph } from "react-icons/vsc";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import ToolTip from "../ToolTip/ToolTip";
 import "./ToolBar.css";
@@ -62,7 +62,7 @@ function Toolbar({ func0, func1, func2 }) {
 						index={0}
 					/>
 					<ToggleButton
-						children={<MdOutlineFeaturedPlayList />}
+						children={<VscGraph />}
 						func={func1}
 						hover={handleHover}
 						index={1}
