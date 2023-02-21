@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./TxCard.css";
 import makeBlockie from "ethereum-blockies-base64";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 import { FiCopy } from "react-icons/fi";
 import { BsChevronDown } from "react-icons/bs";
 
-function TxCard() {
+function TxCard({
+	fromAddress,
+	toAddress,
+	timeStamp,
+	txHash,
+	txValue,
+	gasUsed,
+}) {
 	const source = new Image();
-	source.src = makeBlockie(`${"SOURCE"}`);
+	source.src = makeBlockie(`${"fromAddress"}`);
 	const other = new Image();
-	other.src = makeBlockie(`${"OTHER"}`);
-	const sender = true;
-	const amount = 100;
+	other.src = makeBlockie(`${"toAddress"}`);
+
+	useEffect(() => {
+		console.log(toAddress);
+	}, []);
 
 	const [expanded, setExpanded] = useState(false);
 
@@ -63,7 +72,7 @@ function TxCard() {
 								fontSize: "40px",
 								fontWeight: "900",
 							}}
-						>{`${amount}\n `}</p>
+						>{`${txValue * 10 ** -18}\n `}</p>
 						BIT
 					</div>
 
@@ -94,7 +103,7 @@ function TxCard() {
 							marginTop: "4px",
 						}}
 					>
-						0xBc22fDB25c8eC030D3aF0DdEfEF2E5A1058E89f7
+						{fromAddress}
 					</p>
 					<FiCopy />
 				</div>
@@ -111,9 +120,50 @@ function TxCard() {
 							marginTop: "4px",
 						}}
 					>
-						0xBc22fDB25c8eC030D3aF0DdEfEF2E5A1058E89f7
+						{toAddress}
 					</p>
 					<FiCopy />
+				</div>
+				<p style={{ marginTop: "6px" }}>Timestamp: </p>
+				<div style={{ display: "flex", marginTop: "6px" }}>
+					<p
+						style={{
+							fontSize: "14px",
+							marginRight: "8px",
+							marginTop: "4px",
+						}}
+					>
+						{timeStamp}
+					</p>
+				</div>
+				<p style={{ marginTop: "6px" }}>txHash: </p>
+				<div
+					style={{ display: "flex", cursor: "pointer" }}
+					onClick={() => navigator.clipboard.writeText("textToCopy")}
+				>
+					<p
+						style={{
+							fontSize: "10px",
+							marginRight: "8px",
+							marginTop: "4px",
+						}}
+					>
+						{txHash}
+					</p>
+					<FiCopy />
+				</div>
+				<p style={{ marginTop: "6px" }}>gasUsed: </p>
+
+				<div style={{ display: "flex", marginTop: "6px" }}>
+					<p
+						style={{
+							fontSize: "14px",
+							marginRight: "8px",
+							marginTop: "4px",
+						}}
+					>
+						{gasUsed}
+					</p>
 				</div>
 			</div>
 		</div>

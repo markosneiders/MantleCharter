@@ -197,15 +197,19 @@ function Explore() {
 				const fromAddress = transaction.from;
 				const toAddress = transaction.to;
 				const transactionTimeStamp = transaction.timeStamp;
+				const transactionGasUsed = transaction.gasUsed;
+				const transactionHash = transaction.hash;
+				const transactionValue = transaction.value;
+				const webURL = `https://explorer.testnet.mantle.xyz/tx/${transactionHash}`;
 
 				// Add nodes
-				if (!nodes.has(fromAddress)) {
+				if (!nodes.has(fromAddress) || !nodes.has(null)) {
 					nodes.set(fromAddress, {
 						id: fromAddress,
 						name: fromAddress,
 					});
 				}
-				if (!nodes.has(toAddress)) {
+				if (!nodes.has(toAddress) || !nodes.has(null)) {
 					nodes.set(toAddress, { id: toAddress, name: toAddress });
 				}
 
@@ -214,6 +218,10 @@ function Explore() {
 					source: fromAddress,
 					target: toAddress,
 					timeStamp: transactionTimeStamp,
+					gasUsed: transactionGasUsed,
+					txValue: transactionValue,
+					txHash: transactionHash,
+					webURL: webURL,
 				});
 			});
 
@@ -337,7 +345,14 @@ function Explore() {
 					func2={handleBlockies}
 				/>
 				<CurrentView address={currentAddress} onClick={openAddress} />
-				<Timeline isOpen={isTimelineOpen} onClose={closeTimeline} />
+				{!isLoading && data.links.length > 0 ? (
+					<Timeline
+						isOpen={isTimelineOpen}
+						onClose={closeTimeline}
+						transactions={data.links}
+					/>
+				) : null}
+				{console.log(data.links)}
 				<AddressSelect
 					isOpen={isAddressOpen}
 					onClose={closeAddress}

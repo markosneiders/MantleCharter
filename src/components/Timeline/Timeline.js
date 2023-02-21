@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./Timeline.css";
 import { AiOutlineClose } from "react-icons/ai";
 import TxCard from "../TxCard/TxCard";
-function Timeline({ isOpen, onClose }) {
+function Timeline({ isOpen, onClose, transactions }) {
 	const handleParentClick = (event) => {
 		event.preventDefault();
 
@@ -33,7 +33,17 @@ function Timeline({ isOpen, onClose }) {
 				<div className="Timeline__content-close" onClick={onClose}>
 					<AiOutlineClose />
 				</div>
-				<TxCard />
+				{transactions.map((transaction) => (
+					<TxCard
+						key={transaction.id}
+						fromAddress={transaction.source}
+						toAddress={transaction.target}
+						timeStamp={transaction.timeStamp}
+						txHash={transaction.txHash}
+						txValue={transaction.txValue}
+						gasUsed={transaction.gasUsed}
+					/>
+				))}
 			</div>
 		</div>
 	);

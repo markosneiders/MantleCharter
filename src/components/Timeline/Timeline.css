@@ -33,6 +33,7 @@
 	height: 80%;
 	color: #ffffff;
 	font-family: "Comfortaa", cursive;
+	overflow-y: scroll;
 }
 .Timeline__content-close {
 	position: absolute;

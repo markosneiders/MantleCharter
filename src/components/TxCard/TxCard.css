@@ -4,6 +4,7 @@
 	height: min-content;
 	border-radius: 8px;
 	padding: 12px;
+	margin-top: 15px;
 }
 .TxCard__Header {
 	display: flex;
