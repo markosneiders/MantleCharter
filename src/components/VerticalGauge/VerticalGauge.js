@@ -18,27 +18,31 @@ function VerticalGauge({ max, min, onChange }) {
 	const handleMouseMove = (event) => {
 		if (!isDragging) {
 			return;
+		} else {
+			const deltaY = event.clientY - startYRef.current;
+			setSliderDistance((prevPosition) => {
+				const newPosition = prevPosition + deltaY;
+				const minPosition = 0;
+				const maxPosition = windowSize.current[1] - 167;
+				if (newPosition < minPosition) {
+					return minPosition;
+				}
+				if (newPosition > maxPosition) {
+					return maxPosition;
+				}
+				return newPosition;
+			});
 		}
-		const deltaY = event.clientY - startYRef.current;
-		setSliderDistance((prevPosition) => {
-			const newPosition = prevPosition + deltaY;
-			const minPosition = 0;
-			const maxPosition = windowSize.current[1] - 167;
-			if (newPosition < minPosition) {
-				return minPosition;
-			}
-			if (newPosition > maxPosition) {
-				return maxPosition;
-			}
-			return newPosition;
-		});
+
 		startYRef.current = event.clientY;
 	};
 
 	useEffect(() => {
 		document.addEventListener("mouseup", handleMouseUp);
+		window.addEventListener("mousemove", handleMouseMove);
 		return () => {
 			document.removeEventListener("mouseup", handleMouseUp);
+			window.removeEventListener("mousemove", handleMouseMove);
 		};
 	});
 
@@ -46,12 +50,6 @@ function VerticalGauge({ max, min, onChange }) {
 		setIsDragging(false);
 	};
 
-	//Updates value of slider to parent
-	useEffect(() => {
-		onChange(
-			min - (min - max) * (sliderDistance / (windowSize.current[1] - 167))
-		);
-	}, [sliderDistance, max]);
 	useEffect(() => {
 		setSliderDistance(0);
 		onChange(min);
@@ -79,6 +77,14 @@ function VerticalGauge({ max, min, onChange }) {
 					style={{ top: sliderDistance }}
 					onMouseDown={handleMouseDown}
 					onMouseMove={handleMouseMove}
+					onMouseUp={() =>
+						onChange(
+							min -
+								(min - max) *
+									(sliderDistance /
+										(windowSize.current[1] - 167))
+						)
+					}
 				>
 					{UnixTimeToDate(
 						min -

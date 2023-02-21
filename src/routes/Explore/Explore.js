@@ -17,7 +17,9 @@ import axios from "axios";
 function Explore() {
 	//State definitions
 	const [isLoading, setIsLoading] = useState(true);
+
 	const [data, setData] = useState([]);
+	const [filteredData, setFilteredData] = useState({ nodes: [], links: [] });
 	const [hoverAddress, setHoverAddress] = useState("");
 
 	const [blockies, setBlockies] = useState(true);
@@ -27,6 +29,7 @@ function Explore() {
 		"0xBc22fDB25c8eC030D3aF0DdEfEF2E5A1058E89f7"
 	);
 	const [currentDepth, setCurrentDepth] = useState(0);
+	const [previousDepth, setPreviousDepth] = useState(true);
 
 	const [isVisible, setIsVisible] = useState(false);
 	const [hover, setHover] = useState(false);
@@ -36,6 +39,7 @@ function Explore() {
 	const NODE_R = 8;
 	const graphRef = useRef(null);
 	const windowSize = useRef([window.innerWidth, window.innerHeight]);
+	const blockiesCache = new Map();
 
 	//When page is loaded slowly fade in
 	useEffect(() => {
@@ -135,7 +139,7 @@ function Explore() {
 	const graphOptions = {
 		nodeCanvasObject: (node, ctx) => {
 			if (blockies && node.id !== "") {
-				//Choose background color depending on if the nod is hovered upon
+				// Choose background color depending on if the node is hovered upon
 				if (highlightNodes.has(node)) {
 					if (hoverNode === node) {
 						ctx.fillStyle = "#fff";
@@ -147,9 +151,13 @@ function Explore() {
 				}
 				ctx.fillRect(node.x - 6, node.y - 6, 12, 12);
 
-				//Render blockies image
-				const img = new Image();
-				img.src = makeBlockie(`${node.id}`);
+				// Render blockies image
+				let img = blockiesCache.get(node.id);
+				if (!img) {
+					img = new Image();
+					img.src = makeBlockie(`${node.id}`);
+					blockiesCache.set(node.id, img);
+				}
 				const imgSize = 10;
 				ctx.drawImage(
 					img,
@@ -211,7 +219,6 @@ function Explore() {
 
 			const graphData = { nodes: Array.from(nodes.values()), links };
 			setData(graphData);
-			console.log(graphData);
 			setIsLoading(false);
 		} catch (err) {
 			console.error(err);
@@ -220,7 +227,7 @@ function Explore() {
 	};
 
 	//Function to determine if to show a link
-	const linkVisibility = (link) => link.timeStamp >= currentDepth;
+	// const linkVisibility = (link) => link.timeStamp >= currentDepth;
 	const nodeVisibility = (node) => {
 		const hasLinks = data.links.some(
 			(link) =>
@@ -230,6 +237,44 @@ function Explore() {
 		);
 		return hasLinks;
 	};
+
+	//Generates filtered data for use by graph (filters by age from the vertical slider)
+	useEffect(() => {
+		const links = [];
+		const nodes = new Map();
+		try {
+			data.links.forEach((link) => {
+				if (link.timeStamp >= currentDepth) {
+					links.push({
+						source: link.source,
+						target: link.target,
+						timeStamp: link.timeStamp,
+					});
+				}
+			});
+
+			data.nodes.forEach((node) => {
+				const hasLinks = data.links.some(
+					(link) =>
+						(link.source === node.id &&
+							link.timeStamp >= currentDepth) ||
+						(link.target === node.id &&
+							link.timeStamp >= currentDepth)
+				);
+				if (hasLinks) {
+					nodes.set(node.id, {
+						id: node.id,
+						name: node.id,
+					});
+				}
+			});
+
+			const filtData = { nodes: Array.from(nodes.values()), links };
+			setFilteredData(filtData);
+			setPreviousDepth(currentDepth);
+		} catch (e) {}
+	}, [currentDepth]);
+
 	return (
 		<div className="bg">
 			<div
@@ -240,7 +285,7 @@ function Explore() {
 					{isLoading ? null : (
 						<ForceGraph2D
 							ref={graphRef}
-							graphData={data}
+							graphData={filteredData}
 							autoPauseRedraw={false}
 							maxZoom={5}
 							minZoom={0.5}
@@ -256,8 +301,6 @@ function Explore() {
 							linkDirectionalParticleWidth={(link) =>
 								highlightLinks.has(link) ? 7 : 3
 							}
-							linkVisibility={linkVisibility}
-							nodeVisibility={nodeVisibility}
 							onLinkHover={handleLinkHover}
 							onNodeHover={handleNodeHover}
 							onNodeClick={(e) => setCurrentAddress(e.id)}

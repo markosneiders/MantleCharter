@@ -37,7 +37,9 @@ function Toolbar({ func0, func1, func2, func3 }) {
 			<ToolTip
 				active={hover[2]}
 				children={
-					<div className="toggle-button-tooltip">Toggle blockies</div>
+					<div className="toggle-button-tooltip">
+						Toggle Blockies (Improves performance)
+					</div>
 				}
 			/>
 			<ToolTip
