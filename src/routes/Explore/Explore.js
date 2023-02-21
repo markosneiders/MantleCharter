@@ -8,6 +8,7 @@ import Toolbar from "../../components/ToolBar/Toolbar";
 import CurrentView from "../../components/CurrentView/CurrentView";
 import Timeline from "../../components/Timeline/Timeline";
 import AddressSelect from "../../components/AddressSelect/AddressSelect";
+import HelpMenu from "../../components/HelpMenu/HelpMenu";
 
 //Packages import
 import ForceGraph2D from "react-force-graph-2d";
@@ -22,6 +23,7 @@ function Explore() {
 	const [hoverAddress, setHoverAddress] = useState("");
 	const [blockies, setBlockies] = useState(true);
 	const [isTimelineOpen, setIsTimelineOpen] = useState(false);
+	const [isHelpMenuOpen, setIsHelpMenuOpen] = useState(false);
 	const [isAddressOpen, setIsAddressOpen] = useState(false);
 	const [currentAddress, setCurrentAddress] = useState("");
 	const [currentDepth, setCurrentDepth] = useState(0);
@@ -146,6 +148,14 @@ function Explore() {
 
 	const handleReload = () => {
 		getData();
+	};
+
+	const openHelpMenu = () => {
+		setIsHelpMenuOpen(true);
+	};
+
+	const closeHelpMenu = () => {
+		setIsHelpMenuOpen(false);
 	};
 
 	//Formats address to a more readable format
@@ -362,6 +372,7 @@ function Explore() {
 					func2={handleBlockies}
 					func3={handleFreeze}
 					func4={handleReload}
+					func5={openHelpMenu}
 				/>
 				<CurrentView address={currentAddress} onClick={openAddress} />
 				{!isLoading && data.links != undefined ? (
@@ -371,7 +382,7 @@ function Explore() {
 						transactions={data.links}
 					/>
 				) : null}
-				{console.log(data.links)}
+				<HelpMenu isOpen={isHelpMenuOpen} onClose={closeHelpMenu} />
 				<AddressSelect
 					isOpen={isAddressOpen}
 					onClose={closeAddress}

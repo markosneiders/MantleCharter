@@ -1,4 +1,4 @@
-.Timeline {
+.HelpMenu {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -15,14 +15,14 @@
 	transition: 0.5s;
 }
 
-.Timeline.visible {
+.HelpMenu.visible {
 	opacity: 1;
 }
-.Timeline.hidden {
+.HelpMenu.hidden {
 	pointer-events: none;
 }
 
-.Timeline__content {
+.HelpMenu__content {
 	position: relative;
 	background-color: #003c81;
 	padding: 16px;
@@ -31,9 +31,8 @@
 	height: 80%;
 	color: #ffffff;
 	font-family: "Comfortaa", cursive;
-	overflow-y: scroll;
 }
-.Timeline__content-close {
+.HelpMenu__content-close {
 	position: absolute;
 	top: 16px;
 	right: 16px;
@@ -48,9 +47,9 @@
 	cursor: pointer;
 	font-size: 32px;
 }
-.Timeline__content-close:hover {
+.HelpMenu__content-close:hover {
 	transform: scale(1.1);
 }
-.Timeline__content-close:active {
+.HelpMenu__content-close:active {
 	transform: scale(0.9);
 }

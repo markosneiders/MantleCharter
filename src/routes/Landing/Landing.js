@@ -37,7 +37,7 @@ function Landing() {
 					paused={false}
 					style={{
 						transition: "all 1s ease-in-out",
-						transform: dive ? "translateY(-30%)" : "translateY(0)",
+						transform: dive ? "translateY(-35%)" : "translateY(0)",
 					}}
 					options={{
 						height: 640,
@@ -52,7 +52,7 @@ function Landing() {
 					paused={false}
 					style={{
 						transition: "all 1.5s ease-in-out",
-						transform: dive ? "translateY(-30%)" : "translateY(0)",
+						transform: dive ? "translateY(-35%)" : "translateY(0)",
 					}}
 					options={{
 						height: 680,
@@ -67,7 +67,7 @@ function Landing() {
 					paused={false}
 					style={{
 						transition: "all 2s ease-in-out",
-						transform: dive ? "translateY(-30%)" : "translateY(0)",
+						transform: dive ? "translateY(-35%)" : "translateY(0)",
 					}}
 					options={{
 						height: 720,
