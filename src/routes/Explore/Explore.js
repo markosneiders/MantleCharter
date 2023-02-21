@@ -40,19 +40,19 @@ function Explore() {
 	//When page is loaded slowly fade in
 	useEffect(() => {
 		if (currentAddress === "") {
-			if (localStorage.getItem("currentAddress").length < 10) {
+			if (
+				localStorage.getItem("currentAddress") != undefined ||
+				localStorage.getItem("currentAddress") == null
+			) {
 				openAddress();
-			} else {
-				setCurrentAddress(localStorage.getItem("currentAddress"));
 			}
 		}
-		console.log(localStorage.getItem("currentAddress"));
+
 		setIsVisible(true);
 		getData();
 	}, []);
 	useEffect(() => {
 		getData();
-		console.log(currentAddress);
 		localStorage.setItem("currentAddress", currentAddress);
 	}, [currentAddress]);
 
@@ -251,7 +251,6 @@ function Explore() {
 	//Generates filtered data for use by graph (filters by age from the vertical slider)
 	useEffect(() => {
 		setFilteredData({ nodes: [], links: [] });
-		console.log(data);
 		const links = [];
 		const nodes = new Map();
 		try {
