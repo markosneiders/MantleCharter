@@ -36,6 +36,9 @@ function AddressSelect({ isOpen, onClose, address, onChange }) {
 			document.removeEventListener("keydown", handleEsc, false);
 		};
 	}, [handleEsc]);
+	useEffect(() => {
+		setText(address);
+	}, [address]);
 
 	const img = new Image();
 	if (text != "") {

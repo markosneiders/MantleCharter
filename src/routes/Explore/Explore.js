@@ -17,25 +17,21 @@ import axios from "axios";
 function Explore() {
 	//State definitions
 	const [isLoading, setIsLoading] = useState(true);
-
 	const [data, setData] = useState([]);
 	const [filteredData, setFilteredData] = useState({ nodes: [], links: [] });
 	const [hoverAddress, setHoverAddress] = useState("");
-
 	const [blockies, setBlockies] = useState(true);
 	const [isTimelineOpen, setIsTimelineOpen] = useState(false);
 	const [isAddressOpen, setIsAddressOpen] = useState(false);
-	const [currentAddress, setCurrentAddress] = useState(
-		"0xBc22fDB25c8eC030D3aF0DdEfEF2E5A1058E89f7"
-	);
+	const [currentAddress, setCurrentAddress] = useState("");
 	const [currentDepth, setCurrentDepth] = useState(0);
-	const [previousDepth, setPreviousDepth] = useState(true);
-
 	const [isVisible, setIsVisible] = useState(false);
 	const [hover, setHover] = useState(false);
 	const [highlightNodes, setHighlightNodes] = useState(new Set());
 	const [highlightLinks, setHighlightLinks] = useState(new Set());
 	const [hoverNode, setHoverNode] = useState(null);
+	const [dragFreeze, setDragFreeze] = useState(false);
+
 	const NODE_R = 8;
 	const graphRef = useRef(null);
 	const windowSize = useRef([window.innerWidth, window.innerHeight]);
@@ -43,11 +39,21 @@ function Explore() {
 
 	//When page is loaded slowly fade in
 	useEffect(() => {
+		if (currentAddress === "") {
+			if (localStorage.getItem("currentAddress").length < 10) {
+				openAddress();
+			} else {
+				setCurrentAddress(localStorage.getItem("currentAddress"));
+			}
+		}
+		console.log(localStorage.getItem("currentAddress"));
 		setIsVisible(true);
 		getData();
 	}, []);
 	useEffect(() => {
 		getData();
+		console.log(currentAddress);
+		localStorage.setItem("currentAddress", currentAddress);
 	}, [currentAddress]);
 
 	const handleNodeHover = (node) => {
@@ -113,7 +119,23 @@ function Explore() {
 		setHighlightLinks(highlightLinks);
 	};
 
-	//Timeline modal open and close
+	//Address selector modal open and close
+	const openAddress = () => {
+		setIsAddressOpen(true);
+	};
+	const closeAddress = () => {
+		setIsAddressOpen(false);
+	};
+
+	//Toolbar functions
+	const handleBlockies = () => {
+		setBlockies(!blockies);
+	};
+
+	const handleFreeze = () => {
+		setDragFreeze(!dragFreeze);
+	};
+
 	const openTimeline = () => {
 		setIsTimelineOpen(true);
 	};
@@ -122,12 +144,8 @@ function Explore() {
 		setIsTimelineOpen(false);
 	};
 
-	const closeAddress = () => {
-		setIsAddressOpen(false);
-	};
-	//Toolbar functions
-	const handleBlockies = () => {
-		setBlockies(!blockies);
+	const handleReload = () => {
+		getData();
 	};
 
 	//Formats address to a more readable format
@@ -155,7 +173,7 @@ function Explore() {
 				let img = blockiesCache.get(node.id);
 				if (!img) {
 					img = new Image();
-					img.src = makeBlockie(`${node.id}`);
+					img.src = makeBlockie(`${node.id || "0"}`);
 					blockiesCache.set(node.id, img);
 				}
 				const imgSize = 10;
@@ -173,11 +191,6 @@ function Explore() {
 				ctx.fill();
 			}
 		},
-	};
-
-	//Address selector modal open and close
-	const openAddress = () => {
-		setIsAddressOpen(true);
 	};
 
 	const getData = async () => {
@@ -231,23 +244,14 @@ function Explore() {
 		} catch (err) {
 			console.error(err);
 			setIsLoading(false);
+			setData([]);
 		}
-	};
-
-	//Function to determine if to show a link
-	// const linkVisibility = (link) => link.timeStamp >= currentDepth;
-	const nodeVisibility = (node) => {
-		const hasLinks = data.links.some(
-			(link) =>
-				(link.source.id === node.id &&
-					link.timeStamp >= currentDepth) ||
-				(link.target.id === node.id && link.timeStamp >= currentDepth)
-		);
-		return hasLinks;
 	};
 
 	//Generates filtered data for use by graph (filters by age from the vertical slider)
 	useEffect(() => {
+		setFilteredData({ nodes: [], links: [] });
+		console.log(data);
 		const links = [];
 		const nodes = new Map();
 		try {
@@ -279,9 +283,8 @@ function Explore() {
 
 			const filtData = { nodes: Array.from(nodes.values()), links };
 			setFilteredData(filtData);
-			setPreviousDepth(currentDepth);
 		} catch (e) {}
-	}, [currentDepth]);
+	}, [currentDepth, data]);
 
 	return (
 		<div className="bg">
@@ -293,7 +296,11 @@ function Explore() {
 					{isLoading ? null : (
 						<ForceGraph2D
 							ref={graphRef}
-							graphData={filteredData}
+							graphData={
+								data.nodes == undefined
+									? { nodes: [], links: [] }
+									: filteredData
+							}
 							autoPauseRedraw={false}
 							maxZoom={5}
 							minZoom={0.5}
@@ -312,13 +319,24 @@ function Explore() {
 							onLinkHover={handleLinkHover}
 							onNodeHover={handleNodeHover}
 							onNodeClick={(e) => setCurrentAddress(e.id)}
+							onNodeDragEnd={
+								dragFreeze
+									? (node) => {
+											node.fx = node.x;
+											node.fy = node.y;
+											node.fz = node.z;
+									  }
+									: null
+							}
 							{...graphOptions}
 						/>
 					)}
 				</div>
 
 				<div className="Explore__SideBar">
-					{!isLoading && data.links.length > 0 ? (
+					{!isLoading &&
+					data.links != undefined &&
+					data.links[0] != undefined ? (
 						<VerticalGauge
 							min={data.links[0].timeStamp}
 							max={data.links[data.links.length - 1].timeStamp}
@@ -343,9 +361,11 @@ function Explore() {
 					func0={handleZoom}
 					func1={openTimeline}
 					func2={handleBlockies}
+					func3={handleFreeze}
+					func4={handleReload}
 				/>
 				<CurrentView address={currentAddress} onClick={openAddress} />
-				{!isLoading && data.links.length > 0 ? (
+				{!isLoading && data.links != undefined ? (
 					<Timeline
 						isOpen={isTimelineOpen}
 						onClose={closeTimeline}
@@ -359,7 +379,7 @@ function Explore() {
 					address={currentAddress}
 					onChange={setCurrentAddress}
 				/>
-				{data.nodes == 0 ? (
+				{data.nodes == 0 && !isLoading ? (
 					<div className="Explore__NoAddress">
 						No transactions found
 					</div>
@@ -368,10 +388,13 @@ function Explore() {
 					<div className="Explore__NoAddress">Loading...</div>
 				) : null}
 				<div className="Explore__Stats">
-					{isLoading
-						? "Loading"
-						: `Found in total ${data.nodes.length} nodes \n and ${data.links.length} transactions`}
+					{isLoading || data.nodes == undefined
+						? "Loading..."
+						: `Found ${data.nodes.length} nodes \n and ${data.links.length} transactions`}
 				</div>
+				{!isLoading && data.nodes == undefined ? (
+					<div className="Explore__NoAddress">Invalid address</div>
+				) : null}
 			</div>
 		</div>
 	);

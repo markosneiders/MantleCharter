@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { BsChevronDoubleRight, BsXDiamond } from "react-icons/bs";
-import { IoLocate, IoHelp } from "react-icons/io5";
+import { BsChevronDoubleRight, BsXDiamond, BsSnow } from "react-icons/bs";
+import { IoLocate, IoHelp, IoReload } from "react-icons/io5";
 import { VscGraph } from "react-icons/vsc";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import ToolTip from "../ToolTip/ToolTip";
 import "./ToolBar.css";
 
-function Toolbar({ func0, func1, func2, func3 }) {
+function Toolbar({ func0, func1, func2, func3, func4, func5 }) {
 	const [visible, setVisible] = useState(true);
 	const [hover, setHover] = useState(new Array(10).fill(false));
 
@@ -44,6 +44,20 @@ function Toolbar({ func0, func1, func2, func3 }) {
 			/>
 			<ToolTip
 				active={hover[3]}
+				children={
+					<div className="toggle-button-tooltip">
+						Freeze nodes after dragging
+					</div>
+				}
+			/>
+			<ToolTip
+				active={hover[4]}
+				children={
+					<div className="toggle-button-tooltip">Relaod graph</div>
+				}
+			/>
+			<ToolTip
+				active={hover[5]}
 				children={<div className="toggle-button-tooltip">Help</div>}
 			/>
 			<div
@@ -82,10 +96,23 @@ function Toolbar({ func0, func1, func2, func3 }) {
 						startState={true}
 					/>
 					<ToggleButton
-						children={<IoHelp />}
+						children={<BsSnow />}
 						func={func3}
 						hover={handleHover}
 						index={3}
+						toggle={true}
+					/>
+					<ToggleButton
+						children={<IoReload />}
+						func={func4}
+						hover={handleHover}
+						index={4}
+					/>
+					<ToggleButton
+						children={<IoHelp />}
+						func={func5}
+						hover={handleHover}
+						index={5}
 					/>
 				</div>
 			</div>

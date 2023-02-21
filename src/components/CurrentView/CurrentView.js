@@ -2,7 +2,7 @@ import "./CurrentView.css";
 import makeBlockie from "ethereum-blockies-base64";
 function CurrentView({ address, onClick }) {
 	const img = new Image();
-	img.src = makeBlockie(`${address}`);
+	img.src = makeBlockie(`${address || "0"}`);
 	return (
 		<div className="CurrentView" onClick={onClick}>
 			<div className="CurrentView--address">

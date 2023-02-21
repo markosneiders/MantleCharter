@@ -48,6 +48,9 @@ function VerticalGauge({ max, min, onChange }) {
 
 	const handleMouseUp = () => {
 		setIsDragging(false);
+		onChange(
+			min - (min - max) * (sliderDistance / (windowSize.current[1] - 167))
+		);
 	};
 
 	useEffect(() => {
@@ -59,12 +62,11 @@ function VerticalGauge({ max, min, onChange }) {
 		const date = new Date(unixTime * 1000);
 
 		const options = {
-			weekday: "long",
 			year: "numeric",
 			month: "long",
 			day: "numeric",
 		};
-		const humanDate = date.toLocaleDateString("en-US", options); // "Monday, February 21, 2022"
+		const humanDate = date.toLocaleDateString("en-US", options); // "February 21, 2022"
 
 		return humanDate;
 	}
@@ -77,14 +79,6 @@ function VerticalGauge({ max, min, onChange }) {
 					style={{ top: sliderDistance }}
 					onMouseDown={handleMouseDown}
 					onMouseMove={handleMouseMove}
-					onMouseUp={() =>
-						onChange(
-							min -
-								(min - max) *
-									(sliderDistance /
-										(windowSize.current[1] - 167))
-						)
-					}
 				>
 					{UnixTimeToDate(
 						min -
