@@ -211,7 +211,7 @@ function Explore() {
 				`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=${currentAddress}`
 			);
 
-			const transactions = response.data.result;
+			const transactions = await response.data.result;
 
 			const nodes = new Map();
 			const links = [];

@@ -1,16 +1,32 @@
 .TxCard {
-	background-color: #002140;
 	width: 400px;
-	height: min-content;
+	/* height: auto; */
 	border-radius: 8px;
 	padding: 12px;
-	margin-top: 15px;
 }
 .TxCard__Header {
+	background-color: #002140;
+	border-radius: 8px;
+	padding: 12px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.TxCard__Header-expanded {
+	background-color: #002140;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+	padding: 12px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 .TxCard__Body {
-	margin-top: 12px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	padding: 12px;
+	background-color: #002140;
+	transform-origin: top;
+	transition: transform 2s ease-in-out;
 }

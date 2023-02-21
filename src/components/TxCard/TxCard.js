@@ -25,8 +25,17 @@ function TxCard({
 	const [expanded, setExpanded] = useState(false);
 
 	return (
-		<div className="TxCard">
-			<div className="TxCard__Header">
+		<div
+			className="TxCard"
+			style={{
+				height: `${expanded ? "min-content" : "92px"}`,
+			}}
+		>
+			<div
+				className={`${
+					expanded ? "TxCard__Header-expanded" : "TxCard__Header"
+				}`}
+			>
 				<div
 					onClick={() => setExpanded(!expanded)}
 					style={{
@@ -87,9 +96,15 @@ function TxCard({
 					}}
 				/>
 			</div>
+
 			<div
 				className="TxCard__Body"
-				style={{ transform: `scaleY(${expanded ? "1" : "0"})` }}
+				style={{
+					display: `(${expanded ? "block" : "none"})`,
+					transformOrigin: "top",
+					transform: `scaleY(${expanded ? "1" : "0"})`,
+					transition: "transform 0.5s ease-in",
+				}}
 			>
 				<p style={{ marginTop: "6px" }}>From: </p>
 				<div
