@@ -4,7 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import TxCard from "../TxCard/TxCard";
 import TxChart from "../TxChart/TxChart";
 
-function Timeline({ isOpen, onClose, transactions, blockies }) {
+function Timeline({ isOpen, onClose, transactions }) {
 	const handleParentClick = (event) => {
 		event.preventDefault();
 
@@ -90,17 +90,19 @@ function Timeline({ isOpen, onClose, transactions, blockies }) {
 							</h1>
 						</div>
 						<div className="Timeline__content-right-list">
-							{transactions.map((transaction) => (
-								<TxCard
-									key={transaction.id}
-									fromAddress={transaction.source}
-									toAddress={transaction.target}
-									timeStamp={transaction.timeStamp}
-									txHash={transaction.txHash}
-									txValue={transaction.txValue}
-									gasUsed={transaction.gasUsed}
-								/>
-							))}
+							{transactions != undefined
+								? transactions.map((transaction) => (
+										<TxCard
+											key={transaction.id}
+											fromAddress={transaction.source}
+											toAddress={transaction.target}
+											timeStamp={transaction.timeStamp}
+											txHash={transaction.txHash}
+											txValue={transaction.txValue}
+											gasUsed={transaction.gasUsed}
+										/>
+								  ))
+								: null}
 						</div>
 					</div>
 				</div>

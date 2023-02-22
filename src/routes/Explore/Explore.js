@@ -203,7 +203,16 @@ function Explore() {
 			} else {
 				ctx.beginPath();
 				ctx.arc(node.x, node.y, NODE_R * 1, 0, 2 * Math.PI, false);
-				ctx.fillStyle = "#0054b4";
+				if (highlightNodes.has(node)) {
+					if (hoverNode === node) {
+						ctx.fillStyle = "#fff";
+					} else {
+						ctx.fillStyle = "#ccc";
+					}
+				} else {
+					ctx.fillStyle = "#0054b4";
+				}
+
 				ctx.fill();
 			}
 		},
@@ -217,6 +226,10 @@ function Explore() {
 			response = await axios.get(
 				`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=${currentAddress}`
 			);
+
+			// response = await axios.get(
+			// 	`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=${currentAddress}&page=1&offset=1000`
+			// );
 
 			const transactions = await response.data.result;
 			console.log("Data recieved");
@@ -277,13 +290,23 @@ function Explore() {
 		const links = [];
 		const nodes = new Map();
 		try {
+			const uniqueLinks = new Set(); // maintain a set of unique links
+
 			data.links.forEach((link) => {
 				if (link.timeStamp >= currentDepth) {
-					links.push({
+					const newLink = {
 						source: link.source,
 						target: link.target,
 						timeStamp: link.timeStamp,
-					});
+					};
+
+					const linkId = `${newLink.source}-${newLink.target}`; // create a unique ID for the link
+
+					// check if the link already exists
+					if (!uniqueLinks.has(linkId)) {
+						uniqueLinks.add(linkId); // add the link ID to the set of unique links
+						links.push(newLink); // add the new link to the links array
+					}
 				}
 			});
 
@@ -303,7 +326,11 @@ function Explore() {
 				}
 			});
 
-			const filtData = { nodes: Array.from(nodes.values()), links };
+			const filtData = {
+				nodes: Array.from(nodes.values()),
+				links,
+			};
+
 			console.log(filtData);
 			setFilteredData(filtData);
 		} catch (e) {}
@@ -320,11 +347,11 @@ function Explore() {
 						<ForceGraph2D
 							ref={graphRef}
 							graphData={
-								data.nodes == undefined
+								filteredData.nodes == undefined
 									? { nodes: [], links: [] }
 									: filteredData
 							}
-							autoPauseRedraw={false}
+							autoPauseRedraw={true}
 							maxZoom={5}
 							minZoom={0.5}
 							nodeLabel={""}
@@ -380,6 +407,7 @@ function Explore() {
 						<div className="Explore__ToolTip">{hoverAddress}</div>
 					}
 				/>
+
 				<Toolbar
 					func0={handleZoom}
 					func1={openTimeline}
@@ -388,15 +416,17 @@ function Explore() {
 					func4={handleReload}
 					func5={openHelpMenu}
 				/>
+
 				<CurrentView address={currentAddress} onClick={openAddress} />
+
 				{!isLoading && data.links != undefined ? (
 					<Timeline
 						isOpen={isTimelineOpen}
 						onClose={closeTimeline}
-						transactions={data.links}
-						blockies={blockiesCache}
+						transactions={isTimelineOpen ? data.links : undefined}
 					/>
 				) : null}
+
 				<HelpMenu isOpen={isHelpMenuOpen} onClose={closeHelpMenu} />
 				<AddressSelect
 					isOpen={isAddressOpen}
@@ -415,7 +445,7 @@ function Explore() {
 				<div className="Explore__Stats">
 					{isLoading || data.nodes == undefined
 						? "Loading..."
-						: `Found ${data.nodes.length} nodes \n and ${data.links.length} transactions`}
+						: `Returned ${data.nodes.length} nodes \n and ${data.links.length} transactions`}
 				</div>
 				{!isLoading && data.nodes == undefined ? (
 					<div className="Explore__NoAddress">Invalid address</div>
