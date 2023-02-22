@@ -38,7 +38,7 @@ function HelpMenu({ isOpen, onClose }) {
 						What is MantleCharter?
 					</div>
 					<div className="HelpMenu__content-Text">
-						Mantle charter let's you view any mantle testnet
+						MantleCharter let's you view any mantle testnet
 						addresses transaction history in a intuitive graphical
 						way.
 					</div>

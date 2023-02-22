@@ -18,6 +18,7 @@ import axios from "axios";
 function Explore() {
 	//State definitions
 	const [isLoading, setIsLoading] = useState(true);
+	const [isError, setIsError] = useState(false);
 	const [data, setData] = useState([]);
 	const [filteredData, setFilteredData] = useState({ nodes: [], links: [] });
 	const [hoverAddress, setHoverAddress] = useState("");
@@ -55,13 +56,12 @@ function Explore() {
 		}
 
 		setIsVisible(true);
-		//getData();
 	}, []);
 	useEffect(() => {
 		if (currentAddress != "") {
 			localStorage.setItem("currentAddress", currentAddress);
+			getData();
 		}
-		getData();
 	}, [currentAddress]);
 
 	const handleNodeHover = (node) => {
@@ -227,6 +227,7 @@ function Explore() {
 	};
 
 	const getData = async () => {
+		setIsError(false);
 		setIsLoading(true);
 		console.log("Getting data");
 		let response;
@@ -285,8 +286,10 @@ function Explore() {
 			const graphData = { nodes: Array.from(nodes.values()), links };
 			await setData(graphData);
 			setIsLoading(false);
+			setIsError(false);
 		} catch (err) {
 			console.error(err);
+			setIsError(true);
 			setIsLoading(false);
 			setData([]);
 		}
@@ -376,7 +379,10 @@ function Explore() {
 							}
 							onLinkHover={handleLinkHover}
 							onNodeHover={handleNodeHover}
-							onNodeClick={(e) => setCurrentAddress(e.id)}
+							onNodeClick={(e) => [
+								setCurrentAddress(e.id),
+								setHover(false),
+							]}
 							onNodeDragEnd={
 								dragFreeze
 									? (node) => {
@@ -455,7 +461,7 @@ function Explore() {
 						? "Loading..."
 						: `Returned ${data.nodes.length} nodes \n and ${data.links.length} transactions`}
 				</div>
-				{!isLoading && data.nodes == undefined ? (
+				{isError && data.nodes == undefined ? (
 					<div className="Explore__NoAddress">Invalid address</div>
 				) : null}
 			</div>
