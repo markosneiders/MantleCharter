@@ -119,7 +119,7 @@ const TxCard = ({
 				<p style={{ marginTop: "6px" }}>From: </p>
 				<div
 					style={{ cursor: "pointer" }}
-					onClick={() => navigator.clipboard.writeText("textToCopy")}
+					onClick={() => navigator.clipboard.writeText(fromAddress)}
 				>
 					<p
 						style={{
@@ -134,7 +134,7 @@ const TxCard = ({
 				<p style={{ marginTop: "10px" }}>To: </p>
 				<div
 					style={{ cursor: "pointer" }}
-					onClick={() => navigator.clipboard.writeText("textToCopy")}
+					onClick={() => navigator.clipboard.writeText(fromAddress)}
 				>
 					<p
 						style={{
@@ -142,7 +142,7 @@ const TxCard = ({
 							marginTop: "3px",
 						}}
 					>
-						{toAddress} <FiCopy />
+						{fromAddress} <FiCopy />
 					</p>
 				</div>
 				<p style={{ marginTop: "10px" }}>Timestamp: </p>
@@ -157,7 +157,7 @@ const TxCard = ({
 				<p style={{ marginTop: "10px" }}>txHash: </p>
 				<div
 					style={{ cursor: "pointer" }}
-					onClick={() => navigator.clipboard.writeText("textToCopy")}
+					onClick={() => navigator.clipboard.writeText(txHash)}
 				>
 					<p
 						style={{

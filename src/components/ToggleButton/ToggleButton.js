@@ -20,8 +20,6 @@ const ToggleButton = ({ children, toggle, func, hover, index, startState }) => {
 	}, [hovered]);
 
 	const handleClick = () => {
-		setHovered(false);
-		setDeepHover(false);
 		setToggled(!toggled);
 		func();
 	};
