@@ -67,9 +67,19 @@ MantleCharter is a graphicaly based Mantle address transaction explorer which le
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Features
+
+- Graph view: A graphical representation of transaction flow between different addresses on the Mantle L2 blockchain.
+- TimeLine view: Explore transactions in a detailed way and visualize transaction volume over time.
+- User can click on any node to change the current address view to the one that was clicked.
+- MetaMask integration: Ability to connect to MetaMask and view transaction data for your own address on Mantle.
+- Search functionality: Ability to search for specific addresses or transactions on the blockchain.
+
 ### Built With
 
 -   [![React][react.js]][react-url]
+-   Graph was built with react-force-graph-2d.js
+-   Charts were built using recharts.js
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
