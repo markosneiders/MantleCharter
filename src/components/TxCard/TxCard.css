@@ -1,8 +1,10 @@
 .TxCard {
-	width: 400px;
-	/* height: auto; */
+	width: 90%;
+	height: auto;
 	border-radius: 8px;
 	padding: 12px;
+	text-align: center;
+	margin: auto;
 }
 .TxCard__Header {
 	background-color: #002140;

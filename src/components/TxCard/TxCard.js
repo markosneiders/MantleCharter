@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./TxCard.css";
 import makeBlockie from "ethereum-blockies-base64";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
@@ -13,16 +13,40 @@ function TxCard({
 	txValue,
 	gasUsed,
 }) {
-	const source = new Image();
-	source.src = makeBlockie(`${"fromAddress"}`);
-	const other = new Image();
-	other.src = makeBlockie(`${"toAddress"}`);
-
-	useEffect(() => {
-		console.log(toAddress);
-	}, []);
-
 	const [expanded, setExpanded] = useState(false);
+
+	let source = new Image();
+	let other = new Image();
+	source.src = makeBlockie(`${"FROM"}`);
+	other.src = makeBlockie(`${"TO"}`);
+
+	// useEffect(() => {
+	// 	if (toAddress != null && fromAddress != null) {
+	// 		source.src = makeBlockie(`${"FROM"}`);
+	// 		other.src = makeBlockie(`${"TO"}`);
+	// 	} else {
+	// 		source.src = makeBlockie(`${"FROM"}`);
+	// 		other.src = makeBlockie(`${"TO"}`);
+	// 	}
+	// }, [toAddress, fromAddress]);
+
+	function UnixTimeToDate(unixTime) {
+		const date = new Date(unixTime * 1000);
+
+		const options = {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+			hour: "numeric",
+			minute: "numeric",
+			second: "numeric",
+			hour12: true,
+			timeZoneName: "short",
+		};
+		const humanDate = date.toLocaleDateString("en-US", options); // "February 21, 2022 11:25:23 PM GMT+2"
+
+		return humanDate;
+	}
 
 	return (
 		<div
@@ -103,83 +127,70 @@ function TxCard({
 					display: `(${expanded ? "block" : "none"})`,
 					transformOrigin: "top",
 					transform: `scaleY(${expanded ? "1" : "0"})`,
-					transition: "transform 0.5s ease-in",
+					transition: "transform 0.1s ease-in",
 				}}
 			>
 				<p style={{ marginTop: "6px" }}>From: </p>
 				<div
-					style={{ display: "flex", cursor: "pointer" }}
+					style={{ cursor: "pointer" }}
 					onClick={() => navigator.clipboard.writeText("textToCopy")}
 				>
 					<p
 						style={{
 							fontSize: "14px",
-							marginRight: "8px",
-							marginTop: "4px",
+							marginTop: "3px",
 						}}
 					>
-						{fromAddress}
+						{fromAddress} <FiCopy />
 					</p>
-					<FiCopy />
 				</div>
 
-				<p style={{ marginTop: "6px" }}>To: </p>
+				<p style={{ marginTop: "10px" }}>To: </p>
 				<div
-					style={{ display: "flex", cursor: "pointer" }}
+					style={{ cursor: "pointer" }}
 					onClick={() => navigator.clipboard.writeText("textToCopy")}
 				>
 					<p
 						style={{
 							fontSize: "14px",
-							marginRight: "8px",
-							marginTop: "4px",
+							marginTop: "3px",
 						}}
 					>
-						{toAddress}
-					</p>
-					<FiCopy />
-				</div>
-				<p style={{ marginTop: "6px" }}>Timestamp: </p>
-				<div style={{ display: "flex", marginTop: "6px" }}>
-					<p
-						style={{
-							fontSize: "14px",
-							marginRight: "8px",
-							marginTop: "4px",
-						}}
-					>
-						{timeStamp}
+						{toAddress} <FiCopy />
 					</p>
 				</div>
-				<p style={{ marginTop: "6px" }}>txHash: </p>
+				<p style={{ marginTop: "10px" }}>Timestamp: </p>
+				<p
+					style={{
+						fontSize: "14px",
+						marginTop: "3px",
+					}}
+				>
+					{UnixTimeToDate(timeStamp)}
+				</p>
+				<p style={{ marginTop: "10px" }}>txHash: </p>
 				<div
-					style={{ display: "flex", cursor: "pointer" }}
+					style={{ cursor: "pointer" }}
 					onClick={() => navigator.clipboard.writeText("textToCopy")}
 				>
 					<p
 						style={{
-							fontSize: "10px",
-							marginRight: "8px",
-							marginTop: "4px",
+							fontSize: "11px",
+							marginTop: "3px",
 						}}
 					>
-						{txHash}
-					</p>
-					<FiCopy />
-				</div>
-				<p style={{ marginTop: "6px" }}>gasUsed: </p>
-
-				<div style={{ display: "flex", marginTop: "6px" }}>
-					<p
-						style={{
-							fontSize: "14px",
-							marginRight: "8px",
-							marginTop: "4px",
-						}}
-					>
-						{gasUsed}
+						{txHash} <FiCopy />
 					</p>
 				</div>
+				<p style={{ marginTop: "10px" }}>gasUsed: </p>
+				<p
+					style={{
+						fontSize: "14px",
+						marginTop: "3px",
+					}}
+				>
+					{gasUsed}
+				</p>
 			</div>
 		</div>
 	);

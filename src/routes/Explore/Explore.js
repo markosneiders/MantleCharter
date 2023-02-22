@@ -380,6 +380,7 @@ function Explore() {
 						isOpen={isTimelineOpen}
 						onClose={closeTimeline}
 						transactions={data.links}
+						blockies={blockiesCache}
 					/>
 				) : null}
 				<HelpMenu isOpen={isHelpMenuOpen} onClose={closeHelpMenu} />
