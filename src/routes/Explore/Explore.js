@@ -43,10 +43,12 @@ function Explore() {
 	useEffect(() => {
 		if (currentAddress === "") {
 			if (
-				localStorage.getItem("currentAddress") != undefined ||
+				localStorage.getItem("currentAddress") == undefined ||
 				localStorage.getItem("currentAddress") == null
 			) {
 				openAddress();
+			} else {
+				setCurrentAddress(localStorage.getItem("currentAddress"));
 			}
 		}
 
@@ -55,7 +57,9 @@ function Explore() {
 	}, []);
 	useEffect(() => {
 		getData();
-		localStorage.setItem("currentAddress", currentAddress);
+		if (currentAddress != "") {
+			localStorage.setItem("currentAddress", currentAddress);
+		}
 	}, [currentAddress]);
 
 	const handleNodeHover = (node) => {

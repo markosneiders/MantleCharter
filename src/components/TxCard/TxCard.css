@@ -7,7 +7,7 @@
 	margin: auto;
 }
 .TxCard__Header {
-	background-color: #002140;
+	background-color: #003c81;
 	border-radius: 8px;
 	padding: 12px;
 	display: flex;
@@ -16,7 +16,7 @@
 }
 
 .TxCard__Header-expanded {
-	background-color: #002140;
+	background-color: #003c81;
 	border-top-right-radius: 8px;
 	border-top-left-radius: 8px;
 	padding: 12px;
@@ -28,7 +28,7 @@
 	border-bottom-left-radius: 8px;
 	border-bottom-right-radius: 8px;
 	padding: 12px;
-	background-color: #002140;
+	background-color: #003c81;
 	transform-origin: top;
 	transition: transform 2s ease-in-out;
 }

@@ -55,21 +55,20 @@ function Timeline({ isOpen, onClose, transactions, blockies }) {
 									fontWeight: "bolder",
 								}}
 							>
-								Transactions
+								Historical Chart
 							</h1>
 						</div>
-						<div className="Timeline__content-left-list">
-							{transactions.map((transaction) => (
-								<TxCard
-									key={transaction.id}
-									fromAddress={transaction.source}
-									toAddress={transaction.target}
-									timeStamp={transaction.timeStamp}
-									txHash={transaction.txHash}
-									txValue={transaction.txValue}
-									gasUsed={transaction.gasUsed}
-								/>
-							))}
+						<div
+							style={{
+								width: "100%",
+								height: "100%",
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+								zIndex: "100",
+							}}
+						>
+							<TxChart passedData={transactions} />
 						</div>
 					</div>
 					<div className="Timeline__content-right">
@@ -89,20 +88,21 @@ function Timeline({ isOpen, onClose, transactions, blockies }) {
 									fontWeight: "bolder",
 								}}
 							>
-								Historical Chart
+								Transactions
 							</h1>
 						</div>
-						<div
-							style={{
-								width: "100%",
-								height: "100%",
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								zIndex: "100",
-							}}
-						>
-							<TxChart passedData={transactions} />
+						<div className="Timeline__content-right-list">
+							{transactions.map((transaction) => (
+								<TxCard
+									key={transaction.id}
+									fromAddress={transaction.source}
+									toAddress={transaction.target}
+									timeStamp={transaction.timeStamp}
+									txHash={transaction.txHash}
+									txValue={transaction.txValue}
+									gasUsed={transaction.gasUsed}
+								/>
+							))}
 						</div>
 					</div>
 				</div>

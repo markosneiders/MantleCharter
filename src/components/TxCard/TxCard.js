@@ -5,30 +5,34 @@ import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 import { FiCopy } from "react-icons/fi";
 import { BsChevronDown } from "react-icons/bs";
 
-function TxCard({
+const TxCard = ({
 	fromAddress,
 	toAddress,
 	timeStamp,
 	txHash,
 	txValue,
 	gasUsed,
-}) {
+}) => {
 	const [expanded, setExpanded] = useState(false);
 
 	let source = new Image();
 	let other = new Image();
-	source.src = makeBlockie(`${"FROM"}`);
-	other.src = makeBlockie(`${"TO"}`);
+	console.log(`${toAddress}`);
+
+	//Temporary fix
+	source.src = makeBlockie(`FROM`);
+	other.src = makeBlockie(`TO`);
 
 	// useEffect(() => {
-	// 	if (toAddress != null && fromAddress != null) {
+	// 	console.log("HEY");
+	// 	if (toAddress == null && fromAddress == null) {
 	// 		source.src = makeBlockie(`${"FROM"}`);
 	// 		other.src = makeBlockie(`${"TO"}`);
 	// 	} else {
 	// 		source.src = makeBlockie(`${"FROM"}`);
 	// 		other.src = makeBlockie(`${"TO"}`);
 	// 	}
-	// }, [toAddress, fromAddress]);
+	// }, []);
 
 	function UnixTimeToDate(unixTime) {
 		const date = new Date(unixTime * 1000);
@@ -194,6 +198,6 @@ function TxCard({
 			</div>
 		</div>
 	);
-}
+};
 
 export default TxCard;

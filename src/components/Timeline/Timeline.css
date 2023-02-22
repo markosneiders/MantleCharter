@@ -24,16 +24,10 @@
 
 .Timeline__content {
 	position: relative;
-	background: rgb(7, 10, 92);
-	background: linear-gradient(
-		166deg,
-		rgba(7, 10, 92, 1) 0%,
-		rgba(0, 60, 129, 1) 58%,
-		rgba(0, 75, 203, 1) 100%
-	);
+	background-color: #003c81;
 	padding: 16px;
 	border-radius: 8px;
-	width: 80%;
+	width: 90%;
 	height: 80%;
 	color: #ffffff;
 	font-family: "Comfortaa", cursive;
@@ -74,36 +68,36 @@
 }
 
 .Timeline__content-left {
-	background-color: rgb(40, 42, 48);
+	background-color: #002140;
 	height: 100%;
-	width: 35%;
-	border-radius: 10px;
+	width: 65%;
+	border-radius: 12px;
 	margin-right: 5px;
 }
 
-.Timeline__content-left-list {
+.Timeline__content-right-list {
 	overflow-y: scroll;
 	height: 100%;
 	width: 100%;
 }
 
 .Timeline__content-right {
-	background-color: rgb(40, 42, 48);
+	background-color: #002140;
 	height: 100%;
-	width: 50%;
-	border-radius: 10px;
+	width: 30%;
+	border-radius: 12px;
 	margin-left: 5px;
 }
 
-.Timeline__content-left-list::-webkit-scrollbar {
+.Timeline__content-right-list::-webkit-scrollbar {
 	width: 0.6em;
 }
 
-.Timeline__content-left-list::-webkit-scrollbar-track {
+.Timeline__content-right-list::-webkit-scrollbar-track {
 	box-shadow: "inset 0 0 6px #000";
 }
 
-.Timeline__content-left-list::-webkit-scrollbar-thumb {
+.Timeline__content-right-list::-webkit-scrollbar-thumb {
 	background-color: #070811b1;
 	border-radius: 20px;
 }
