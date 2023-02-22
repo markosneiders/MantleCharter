@@ -202,17 +202,25 @@ function Explore() {
 				);
 			} else {
 				ctx.beginPath();
-				ctx.arc(node.x, node.y, NODE_R * 1, 0, 2 * Math.PI, false);
 				if (highlightNodes.has(node)) {
+					ctx.arc(
+						node.x,
+						node.y,
+						NODE_R * 1.1,
+						0,
+						2 * Math.PI,
+						false
+					);
 					if (hoverNode === node) {
 						ctx.fillStyle = "#fff";
 					} else {
 						ctx.fillStyle = "#ccc";
 					}
-				} else {
-					ctx.fillStyle = "#0054b4";
+					ctx.fill();
 				}
-
+				ctx.beginPath();
+				ctx.arc(node.x, node.y, NODE_R * 1, 0, 2 * Math.PI, false);
+				ctx.fillStyle = "#0054b4";
 				ctx.fill();
 			}
 		},
@@ -223,13 +231,13 @@ function Explore() {
 		console.log("Getting data");
 		let response;
 		try {
-			response = await axios.get(
-				`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=${currentAddress}`
-			);
-
 			// response = await axios.get(
-			// 	`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=${currentAddress}&page=1&offset=1000`
+			// 	`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=${currentAddress}`
 			// );
+
+			response = await axios.get(
+				`https://explorer.testnet.mantle.xyz/api?module=account&action=txlist&address=${currentAddress}&page=1&offset=1000`
+			);
 
 			const transactions = await response.data.result;
 			console.log("Data recieved");

@@ -12,7 +12,7 @@ const ToggleButton = ({ children, toggle, func, hover, index, startState }) => {
 			timeoutId = setTimeout(() => {
 				hover(index);
 				setDeepHover(true);
-			}, 500);
+			}, 200);
 		}
 		return () => {
 			clearTimeout(timeoutId);

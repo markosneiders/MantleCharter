@@ -47,17 +47,14 @@ const TxCard = ({
 			}}
 		>
 			<div
-				className={`${
-					expanded ? "TxCard__Header-expanded" : "TxCard__Header"
-				}`}
+				className={`TxCard__Header ${expanded ? "expanded" : ""}`}
+				onClick={() => setExpanded(!expanded)}
 			>
 				<div
-					onClick={() => setExpanded(!expanded)}
 					style={{
 						cursor: "pointer",
 						marginRight: "16px",
 						transform: `scaleY(${expanded ? "-1" : "1"})`,
-						transition: "0.5s",
 					}}
 				>
 					<BsChevronDown fontSize={"30px"} />
@@ -115,10 +112,8 @@ const TxCard = ({
 			<div
 				className="TxCard__Body"
 				style={{
-					display: `(${expanded ? "block" : "none"})`,
 					transformOrigin: "top",
 					transform: `scaleY(${expanded ? "1" : "0"})`,
-					transition: "transform 0.1s ease-in",
 				}}
 			>
 				<p style={{ marginTop: "6px" }}>From: </p>

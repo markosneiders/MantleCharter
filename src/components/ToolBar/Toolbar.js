@@ -38,7 +38,8 @@ function Toolbar({ func0, func1, func2, func3, func4, func5 }) {
 				active={hover[2]}
 				children={
 					<div className="toggle-button-tooltip">
-						Toggle Blockies (Improves performance)
+						Toggle Blockies (Disable if encountering performance
+						issues)
 					</div>
 				}
 			/>

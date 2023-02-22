@@ -27,7 +27,7 @@
 	background-color: #003c81;
 	padding: 16px;
 	border-radius: 8px;
-	width: 80%;
+	width: 20%;
 	height: 80%;
 	color: #ffffff;
 	font-family: "Comfortaa", cursive;
@@ -52,4 +52,21 @@
 }
 .HelpMenu__content-close:active {
 	transform: scale(0.9);
+}
+.HelpMenu__content-Header {
+	color: #ffffff;
+	font-family: "Comfortaa", cursive;
+	font-size: 24px;
+	margin-top: 16px;
+}
+.HelpMenu__content-SubTitle {
+	color: #ffffff;
+	font-family: "Comfortaa", cursive;
+	font-size: 18px;
+	margin-top: 12px;
+}
+.HelpMenu__content-Text {
+	margin-top: 6px;
+	color: #ffffff;
+	font-family: "Comfortaa", cursive;
 }

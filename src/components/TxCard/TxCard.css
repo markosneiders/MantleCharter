@@ -5,6 +5,10 @@
 	padding: 12px;
 	text-align: center;
 	margin: auto;
+	transition: 0.25s;
+}
+.TxCard:hover {
+	transform: scale(1.025);
 }
 .TxCard__Header {
 	background-color: #003c81;
@@ -13,22 +17,22 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	cursor: pointer;
 }
 
-.TxCard__Header-expanded {
-	background-color: #003c81;
-	border-top-right-radius: 8px;
-	border-top-left-radius: 8px;
-	padding: 12px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.TxCard__Header.expanded {
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	border-color: #fff;
+	border-width: 1px;
+	border-bottom-style: solid;
 }
 .TxCard__Body {
 	border-bottom-left-radius: 8px;
 	border-bottom-right-radius: 8px;
 	padding: 12px;
-	background-color: #003c81;
+	background-color: rgb(0, 48, 102);
 	transform-origin: top;
-	transition: transform 2s ease-in-out;
+	border-color: #fff;
+	border-width: 4px;
 }
