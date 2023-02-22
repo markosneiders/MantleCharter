@@ -19,10 +19,10 @@
   <p align="center">
     MantleCharter is a graphicaly based Mantle address transaction explorer which let's you view an addresses transaction history in various graphicaly based ways.
     <br />
-    <a href="https://github.com/markosneiders/MantleCharter"><strong>Try it out »</strong></a>
+    <a href="https://mantlecharter.vercel.app/"><strong>Try it out »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/markosneiders/MantleCharter"><strong>View Demo »</strong></a>
+    <a href="https://youtu.be/_uNb-IQA9vg"><strong>View Demo »</strong></a>
     <br />
     <br />
     <a href="https://github.com/markosneiders/MantleCharter/issues">Report Bug</a>
@@ -60,6 +60,7 @@
 
 ## About The Project
 
+
 <img src="src/assets/images/pic2.png" alt="Logo" height="50%" width="50%" /> 
 <img src="src/assets/images/pic1.png" alt="Logo" height="50%" width="50%"/>
 
@@ -69,11 +70,11 @@ This project is a GraphBased transaction explorer on the Mantle L2 blockchain bu
 
 ## Features
 
--   Graph view: A graphical representation of transaction flow between different addresses on the Mantle L2 blockchain.
--   TimeLine view: Explore transactions in a detailed way and visualize transaction volume over time.
--   User can click on any node to change the current address view to the one that was clicked.
--   MetaMask integration: Ability to connect to MetaMask and view transaction data for your own address on Mantle.
--   Search functionality: Ability to search for specific addresses or transactions on the blockchain.
+- Graph view: A graphical representation of transaction flow between different addresses on the Mantle L2 blockchain.
+- TimeLine view: Explore transactions in a detailed way and visualize transaction volume over time.
+- User can click on any node to change the current address view to the one that was clicked.
+- MetaMask integration: Ability to connect to MetaMask and view transaction data for your own address on Mantle.
+- Search functionality: Ability to search for specific addresses or transactions on the blockchain.
 
 ### Built With
 
@@ -159,8 +160,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Contact
 
 [@markosneiders](https://twitter.com/markosneiders) - markosneiders@gmail.com
-
-roberts.mezals@gmail.com
 
 Project Link: [https://github.com/markosneiders/MantleCharter](https://github.com/markosneiders/MantleCharter)
 
