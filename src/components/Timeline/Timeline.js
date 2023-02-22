@@ -5,8 +5,6 @@ import TxCard from "../TxCard/TxCard";
 import TxChart from "../TxChart/TxChart";
 
 function Timeline({ isOpen, onClose, transactions, blockies }) {
-	console.log(blockies);
-
 	const handleParentClick = (event) => {
 		event.preventDefault();
 

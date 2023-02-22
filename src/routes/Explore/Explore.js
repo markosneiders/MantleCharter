@@ -26,7 +26,9 @@ function Explore() {
 	const [isHelpMenuOpen, setIsHelpMenuOpen] = useState(false);
 	const [isAddressOpen, setIsAddressOpen] = useState(false);
 	const [currentAddress, setCurrentAddress] = useState("");
-	const [currentDepth, setCurrentDepth] = useState(0);
+	const [currentDepth, setCurrentDepth] = useState(
+		Math.floor(Date.now() / 1000)
+	);
 	const [isVisible, setIsVisible] = useState(false);
 	const [hover, setHover] = useState(false);
 	const [highlightNodes, setHighlightNodes] = useState(new Set());
@@ -53,13 +55,13 @@ function Explore() {
 		}
 
 		setIsVisible(true);
-		getData();
+		//getData();
 	}, []);
 	useEffect(() => {
-		getData();
 		if (currentAddress != "") {
 			localStorage.setItem("currentAddress", currentAddress);
 		}
+		getData();
 	}, [currentAddress]);
 
 	const handleNodeHover = (node) => {
@@ -77,7 +79,7 @@ function Explore() {
 		try {
 			if (node) {
 				highlightNodes.add(node);
-				data.links.forEach((source) => {
+				filteredData.links.forEach((source) => {
 					if (source.source.id === node.id) {
 						highlightNodes.add(source.target);
 					} else if (source.target.id === node.id) {
@@ -209,6 +211,7 @@ function Explore() {
 
 	const getData = async () => {
 		setIsLoading(true);
+		console.log("Getting data");
 		let response;
 		try {
 			response = await axios.get(
@@ -216,7 +219,7 @@ function Explore() {
 			);
 
 			const transactions = await response.data.result;
-
+			console.log("Data recieved");
 			const nodes = new Map();
 			const links = [];
 
@@ -229,31 +232,37 @@ function Explore() {
 				const transactionValue = transaction.value;
 				const webURL = `https://explorer.testnet.mantle.xyz/tx/${transactionHash}`;
 
-				// Add nodes
-				if (!nodes.has(fromAddress) || !nodes.has(null)) {
-					nodes.set(fromAddress, {
-						id: fromAddress,
-						name: fromAddress,
+				//Checks if transaction has both addresses
+				if (toAddress != "" && fromAddress != "") {
+					// Add nodes
+					if (!nodes.has(fromAddress) || !nodes.has(null)) {
+						nodes.set(fromAddress, {
+							id: fromAddress,
+							name: fromAddress,
+						});
+					}
+					if (!nodes.has(toAddress) || !nodes.has(null)) {
+						nodes.set(toAddress, {
+							id: toAddress,
+							name: toAddress,
+						});
+					}
+
+					// Add link
+					links.push({
+						source: fromAddress,
+						target: toAddress,
+						timeStamp: transactionTimeStamp,
+						gasUsed: transactionGasUsed,
+						txValue: transactionValue,
+						txHash: transactionHash,
+						webURL: webURL,
 					});
 				}
-				if (!nodes.has(toAddress) || !nodes.has(null)) {
-					nodes.set(toAddress, { id: toAddress, name: toAddress });
-				}
-
-				// Add link
-				links.push({
-					source: fromAddress,
-					target: toAddress,
-					timeStamp: transactionTimeStamp,
-					gasUsed: transactionGasUsed,
-					txValue: transactionValue,
-					txHash: transactionHash,
-					webURL: webURL,
-				});
 			});
 
 			const graphData = { nodes: Array.from(nodes.values()), links };
-			setData(graphData);
+			await setData(graphData);
 			setIsLoading(false);
 		} catch (err) {
 			console.error(err);
@@ -295,6 +304,7 @@ function Explore() {
 			});
 
 			const filtData = { nodes: Array.from(nodes.values()), links };
+			console.log(filtData);
 			setFilteredData(filtData);
 		} catch (e) {}
 	}, [currentDepth, data]);
@@ -358,7 +368,7 @@ function Explore() {
 					) : (
 						<VerticalGauge
 							onChange={setCurrentDepth}
-							min={0}
+							min={Math.floor(Date.now() / 1000)}
 							max={0}
 						/>
 					)}

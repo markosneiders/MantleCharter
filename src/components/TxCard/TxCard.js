@@ -17,22 +17,9 @@ const TxCard = ({
 
 	let source = new Image();
 	let other = new Image();
-	console.log(`${toAddress}`);
 
-	//Temporary fix
-	source.src = makeBlockie(`FROM`);
-	other.src = makeBlockie(`TO`);
-
-	// useEffect(() => {
-	// 	console.log("HEY");
-	// 	if (toAddress == null && fromAddress == null) {
-	// 		source.src = makeBlockie(`${"FROM"}`);
-	// 		other.src = makeBlockie(`${"TO"}`);
-	// 	} else {
-	// 		source.src = makeBlockie(`${"FROM"}`);
-	// 		other.src = makeBlockie(`${"TO"}`);
-	// 	}
-	// }, []);
+	source.src = makeBlockie(`${fromAddress}`);
+	other.src = makeBlockie(`${toAddress}`);
 
 	function UnixTimeToDate(unixTime) {
 		const date = new Date(unixTime * 1000);
