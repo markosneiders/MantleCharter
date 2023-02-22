@@ -49,7 +49,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -61,9 +60,11 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-MantleCharter is a graphicaly based Mantle address transaction explorer which let's you view an addresses transaction history in various graphicaly based ways.
+<img src="src/assets/images/pic2.png" alt="Logo" height="50%" width="50%" /> 
+<img src="src/assets/images/pic1.png" alt="Logo" height="50%" width="50%"/>
+
+This project is a GraphBased transaction explorer on the Mantle L2 blockchain built with React.js. In this explorer, each node represents an address while the links between the nodes are transactions. The project also includes a TimeLine view where a user can view each transaction more thoroughly and see how many transactions were sent on a particular date.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -129,19 +130,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- ROADMAP -->
-
-## Roadmap
-
--   [ ] Feature 1
--   [ ] Feature 2
--   [ ] Feature 3
-    -   [ ] Nested Feature
-
-See the [open issues](https://github.com/markosneiders/MantleCharter/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- CONTRIBUTING -->
 
 ## Contributing
@@ -171,19 +159,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+[@markosneiders](https://twitter.com/markosneiders) - markosneiders@gmail.com
 
 Project Link: [https://github.com/markosneiders/MantleCharter](https://github.com/markosneiders/MantleCharter)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
--   []()
--   []()
--   []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
