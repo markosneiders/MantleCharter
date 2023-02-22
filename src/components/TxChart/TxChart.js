@@ -63,7 +63,7 @@ function TxChart(passedData) {
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="date" />
 				<YAxis />
-				<Tooltip />
+				<Tooltip labelStyle={{ color: "black" }} />
 				<Legend />
 				<Bar dataKey="transactions" fill="#8884d8" />
 			</BarChart>
